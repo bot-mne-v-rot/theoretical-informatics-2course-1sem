@@ -1,0 +1,158 @@
+\chapter{Математическая логика}
+\section{Пропозициональная логика}
+\subsection{Представление булевых функций}
+Для начала унифицируем наши знания о булевых функциях. Мы уже знаем очень много различных
+представлений булевых функций. Утверждается, что все их можно отсортировать по компактности
+\begin{gather*}
+  f: \{0, 1\}^n \longrightarrow \{0,1\}
+\end{gather*}
+Способы представления булевых функций:
+\begin{enumerate}
+  \item Таблица истинности
+  \item Формула (многочлен Жегалкина)
+  \item Булева схема
+  \item Дерево решений
+  \item КНФ и ДНФ
+  \item Задать булеву функцию компьютерной программой, которая 
+  бы вычисляла значение этой булевой функции 
+\end{enumerate}
+
+\begin{conj}
+  \textbf{Литерал} -- переменная или ее отрицание 
+\end{conj}
+
+Начнем обсуждать эффективность тех или иных способов представления. По убыванию их сложности:
+\begin{itemize}
+  \item Самый неэффективный -- очевидно таблица истинности, занимающая размер $2^n$.
+  \item Далее идет дерево решений. В худшем случае оно тоже имеет размер $2^n$. Но, с другой стороны, 
+  для некоторых функций дерево решений будет иметь небольшой размер. Например для функции $OR$.
+  Размер дерева характеризуется его глубиной. То есть сколько нужно пройти входов, чтобы получить ответ. Сам
+  размер можно оценить как $2^{\text{глубина}}$, но это не всегда корректная оценка, как видно в случае функции $OR$.
+  \item КНФ и ДНФ. КНФ и ДНФ в худшем случае не хуже дерева решений
+  \begin{center}
+    \begin{tikzcd}
+      &                                            &                                           & {x_1} \arrow[ld, no head, "0"'] \arrow[rd, no head, "1"] &                                           &   \\
+      &                                            & {x_2} \arrow[ld, no head, "0"'] \arrow[d, no head, "1"]  &                                           & {x_3} \arrow[ld, no head, "0"'] \arrow[rd, no head, "1"] &   \\
+      \textcolor{blue}{0} & x_3 \arrow[ld, no head, "1"'] \arrow[l, no head, "0"'] & {x_4} \arrow[ld, no head, "0"'] \arrow[rd, no head, "1"] & \textcolor{red}{1}                                        &                                           & \textcolor{blue}{0} \\
+      \textcolor{red}{1}  & \textcolor{blue}{0}                                          &                                           & \textcolor{red}{1}                                        &                                           &  
+    \end{tikzcd}
+  \end{center}
+  Способ записи дерева решений. В ДНФ:
+  \begin{enumerate}
+    \item[\textcolor{red}{1.}] $(x_1 \land \lnot x_3)$
+    \item[\textcolor{red}{2.}] $(\lnot x_1 \land x_2 \land x_4)$
+    \item[\textcolor{red}{3.}] $(\lnot x_1 \land \lnot x_2 \land x_3)$
+  \end{enumerate}
+  В КНФ:
+  \begin{enumerate}
+    \item[\textcolor{blue}{1.}] $(\lnot x_1 \lor \lnot x_3)$
+    \item[\textcolor{blue}{2.}] $(x_1 \lor \lnot x_2 \lor x_4)$
+    \item[\textcolor{blue}{3.}] $(x_1 \lor x_2 \lor x_3)$
+  \end{enumerate}
+  \item Ветвящиеся программы -- обобщение дерева решений
+  \begin{conj}
+    \textbf{Ветвящаяся программа}, выполняющая функцию $f(x_1, \dots, x_n)$ -- ориентированный граф без циклов, 
+    у которого есть один исток и два стока, один помеченный нулем, другой -- единице. Все вершины, кроме стоков помечены переменными, и 
+    их степень равна двойке. 
+  \end{conj}
+  Пример ветвящейся программы для функции $x_1 \oplus x_2 \oplus \dots \oplus x_n$:
+   \begin{center}
+     % Пример ветв программы
+     \begin{tikzcd}[column sep=normal]
+      & x \arrow[ld, "0"'] \arrow[rd, "1"] &                                     \\
+{} \arrow[rrd, "1"] \arrow[d, "0"'] &                                    & {} \arrow[lld, "1"'] \arrow[d, "0"] \\
+{} \arrow[rrd, "1"] \arrow[d, "0"'] &                                    & {} \arrow[lld, "1"'] \arrow[d, "0"] \\
+{} \arrow[d, no head, dotted]  &                                    & {} \arrow[d, no head, dotted]       \\
+0                              &                                    & 1                                  
+\end{tikzcd}
+   \end{center}
+  \item Булевы схемы -- самые компактные из всех представлений. 
+  \begin{conj}
+    \textbf{Булева схема} -- ориентированный граф без циклов, у которого 
+    есть один сток, много истоки. все истоки помеченны переменными, остальные вершины помеченны элементами базиса. 
+    Для простоты будем считать, что наш базис -- конъюнкция, дизъюнкция и отрицание. Входящая степень вершин равна
+    количеству аргументов, которые принимает формула. Важное отличие от булевой формулы в том, что любое значение мы можем использовать 
+    несколько раз. Пример:
+    % Пример булевой схемы
+    \begin{center}
+      \begin{tikzcd}
+        & \boxed{\lor} \arrow[rrrr]          &              &              &                          & \boxed{\lor}        &              \\
+        \boxed{\land}  \arrow[ru] &                         & \boxed{\land}  \arrow[lu] &              &                          & \boxed{\lor} \arrow[u] &              \\
+\boxed{\lor} \arrow[u]  &                         & \boxed{\land}  \arrow[u]  &              & \boxed{\lor}  \arrow[ru] \arrow[llu] &             & \boxed{\lnot}  \arrow[lu] \\
+x_1 \arrow[u]  & x_2 \arrow[ru] \arrow[lu] &              & x_3 \arrow[ru] & x_4 \arrow[u] \arrow[llu]  &             & x_5 \arrow[u] 
+\end{tikzcd}
+    \end{center}
+  \end{conj}
+\end{itemize}
+
+\underline{Утверждение}: Если булева функция $f$ представляется в виде дерева решений с 
+$s$ листьями, то $f$ можно записать в КНФ и ДНФ с не более чем $s$ дизъюнктами и конъюнктами.
+
+\underline{Утверждение}: Если у булевой функции $f$ есть формула в базисе $(\lor, \land, \lnot)$ c  $s$ листьями, то $f$ можно вычислить ветвящейся программой
+размера $\leqslant s + 2$
+\begin{proof}
+  Делаем индукцию по числу листьев в формуле. База с одним листом очевидна. 
+  Переход: Формула может начинаться с отрицания, тогда мы просто флипаем биты местами. 
+  \begin{center}
+    \begin{tikzcd}
+      & \boxed{v} \arrow[ld] \arrow[rd] &                                              \\
+\boxed{1} &                                 & \boxed{0} \arrow[ll, bend left, shift right, Leftrightarrow]
+\end{tikzcd}
+  \end{center}
+  Если формула начинается с дизъюнкции, то:
+  \begin{center}
+    \begin{tikzcd}
+      & \boxed{\textcolor{red}{0}} \arrow[rrrd, bend left]                   &  &  &                         & \boxed{0} \\
+\boxed{\varphi} \arrow[ru] \arrow[rd] &                                             &  &  & \boxed{\psi} \arrow[ru] \arrow[rd] &   \\
+      & \boxed{\textcolor{blue}{1}} \arrow[rrrr, no head, dashed, bend right] &  &  &                         & \boxed{\textcolor{blue}{1}}
+\end{tikzcd}
+  \end{center}
+  Синие единички объединяем в один сток, от красного нуля ведем стрелку в исток $\varphi$, а сам ноль выкидываем.
+  
+  Для конъюнкции почти все то же самое:
+  \begin{center}
+    \begin{tikzcd}
+      & \boxed{\textcolor{blue}{0}} \arrow[rrrr, no head, dashed, bend left] &  &  &                         & \boxed{\textcolor{blue}{0}} \\
+\boxed{\varphi} \arrow[ru] \arrow[rd] &                                            &  &  & \boxed{\psi} \arrow[ru] \arrow[rd] &   \\
+      & \boxed{\textcolor{red}{1}} \arrow[rrru]                             &  &  &                         & \boxed{1} 
+\end{tikzcd}
+  \end{center}
+Объединяем нули, продлеваем единицу и удаляем ноду по пути. 
+\end{proof}
+\underline{Утверждение}: Если булева функция $f$ вычисляется ветвящейся программой размера $s$, то она вычисляется булевой схемой размера $\mathcal{O}(s)$.
+\begin{proof}
+  Опять пруф по индукции. База очевидна. Когда у нас есть две ветвящиеся программы $f_u$ и $f_v$, для которых уже есть булевы схемы и мы хотим слепить их в булеву схему $f_w$, делаем что-то такое:
+  \begin{gather*}
+    f_w = (\lnot x \land f_u) \lor (x \land f_v)
+  \end{gather*}
+  И на языке схем:
+  \begin{center}
+    \begin{tikzcd}
+      &              & \boxed{\lor}            &              &              \\
+      & \boxed{\land} \arrow[ru] &              & \boxed{\land} \arrow[lu] &              \\
+      \boxed{\lnot} \arrow[ru]                             &              & f_u \arrow[lu] &              & f_v \arrow[lu] \\
+x \arrow[u] \arrow[rrruu, bend right=49] &              &              &              &             
+\end{tikzcd}
+  \end{center}
+  Закинули всего 4 новых гейта, то есть константное количество, то есть $\mathcal{O}$-шка есть.
+\end{proof}
+
+\subsection{Интерпретация}
+\begin{conj}
+  Пусть $X$ -- множество переменных. Тогда интерпретация -- это:
+  \begin{gather*}
+    I : X \longrightarrow \{0,1\}
+  \end{gather*}
+  Тогда если есть булева формула $\varphi$ и заданы значения переменных, значение данной булевой формулы 
+  в интерпретации $I$ обозначается как $\varphi[I]$.
+\end{conj}
+\begin{conj}
+  Тавтология -- формула, истинная в любой интерпретации.
+\end{conj}
+\begin{conj}
+  Противоречивая формула -- формула, ложная в любой интерпретации.
+\end{conj}
+\begin{gather*}
+  \varphi \text{ -- тавтология} \Longleftrightarrow \lnot \varphi \text{ -- противоречие} \\
+  \varphi \text{ -- выполнима} \Longleftrightarrow \exists I : \varphi[I] = 1
+\end{gather*}
