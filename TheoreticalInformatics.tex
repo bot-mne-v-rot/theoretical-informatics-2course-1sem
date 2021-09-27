@@ -35,6 +35,7 @@
 \usepackage{graphicx}
 \usepackage{tikz-cd}
 \usepackage{extarrows}
+\usepackage{bussproofs}
 \usepackage[breakable, theorems, skins]{tcolorbox}
 
 \usetikzlibrary{patterns.meta,
@@ -292,6 +293,15 @@
     },
 }
 
+\catcode`@=11
+\def\caseswithdelim#1#2{\left#1\,\vcenter{\normalbaselines\m@th
+  \ialign{\strut$##\hfil$&\quad##\hfil\crcr#2\crcr}}\right.}% you might like it without the \strut
+\catcode`@=12
+%
+\def\bcases#1{\caseswithdelim[{#1}}
+\def\vcases#1{\caseswithdelim|{#1}}
+%
+
 \DeclareRobustCommand{\mybox}[2][gray!20]{%
 \begin{tcolorbox}[   %% Adjust the following parameters at will.
         breakable,
@@ -376,6 +386,8 @@
 \newpage
 \begin{normalsize}
 \import{lectures/}{lecture01.tex}
+$ $
+\import{lectures/}{lecture02.tex}
 $ $
 \end{normalsize}
 \end{document}
