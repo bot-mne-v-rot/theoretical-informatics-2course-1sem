@@ -1,0 +1,237 @@
+\subsection{Исчисление секвенций для пропозициональной логики}
+\textit{В этом параграфе мы будем использовать формулы над таким базисом: $\lor, \land, \neg$ и $\to$.}
+
+\begin{conj}
+    Секвенция -- это пара $(\Gamma, \Delta )$, где $\Gamma$ и $\Delta$ являются конечными, возможно пустыми, списками формул. 
+\end{conj}
+Писать $(\Gamma, \Delta)$ зачастую не очень удобно, поэтому мы будем использовать следующее обозначение: $\Gamma \mapsto \Delta$.
+Также существуют умные названия для частей справа и слева от стрелки: \[ \underbrace{x \lor y, z}_{\text{антецедент}} \mapsto \underbrace{\neg x \lor z, t}_{\text{сукцедент}} - \text{ секвенция} \]
+
+\begin{conj}
+    Формульная интерпретация секвенции $\Gamma \mapsto \Delta$ -- это логическая формула вида: \[ \left(\bigwedge_{\varphi \in \Gamma} \varphi \right) \to \left(\bigvee_{\psi \in \Delta} \psi \right)  \]    
+    При этом мы считаем, что $\bigwedge\limits_{\varnothing} = 1$ и $\bigvee\limits_{\varnothing} = 0$.
+\end{conj}
+Мы поняли, что по секвенции можно построить формулу. Но и у формулы есть естественное представление в виде секвенции. Если $\varphi$ -- формула, то ей соответствует секвенция с пустым антецедентом: \[ \mapsto \varphi \Leftrightarrow 1 \mapsto \varphi \]
+Подучается, что вместо того, чтобы доказывать, что формула является тавтологией, можно доказывать, что секвенция является тавтологией.
+
+\begin{conj}
+    Интерпретация $I$ является контрпримером к секвенции $\Gamma \mapsto \Delta$, если формульная интерпретация ложна, т.е. если \[ \forall \varphi \in \Gamma \;\; \varphi[I] = 1 \quad \text{и} \quad \forall \psi \in \Delta \;\; \psi[I] = 0  \]
+\end{conj}
+Таким образом, сенкцения является тавтологией тогда и только тогда, когда у нее нет контрпримеров.
+
+Определим теперь секвенциальное исчисление.
+
+\textbf{Аксиома}. Секвенция $\Gamma \mapsto \Delta$ -- тавтология, если $\Gamma \cap \Delta \neq \varnothing$. 
+
+Например, $\underline{x \lor y}, z \mapsto t \lor f, \underline{x \lor y}$.
+
+\textbf{Правила.}
+\begin{enumerate}
+    \item \AxiomC{$A, B, \Gamma \mapsto \Delta$}
+        \UnaryInfC{$(A \land B), \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\land \mapsto)$
+
+        Эта запись означает, что для того, чтобы доказать, что секвенция снизу является тавтологией, необходимо и достаточно доказать, что секвенция сверху является тавтологией. То есть мы безболезненно перешли к новой секвенции, в которой число логических связок на 1 меньше.
+
+        В общем, очевидно, почему так делать законно. Если для нижней секвенции существует контрпример, то есть интерпретация, в которой все формулы слева верны, значит $(A \land B) = 1$, значит $A = 1$ и $B = 1$, значит эта же интерпретация будет являться контрпримером к секвенции сверху. Несложно убедиться, что в обратную сторону это тоже работает.
+
+        Аналогичное правило для $\lor$:
+
+        \vspace{2mm}
+
+        \item  \AxiomC{$\Gamma \mapsto \Delta, A, B$}
+        \UnaryInfC{$\Gamma \mapsto \Delta, (A \lor B)$}
+        \DisplayProof $\quad (\mapsto \lor)$ 
+
+        \vspace{4mm}
+
+        Научимся теперь избавляться от отрицания:
+
+        \vspace{2mm}
+        
+        \item \AxiomC{$\Gamma \mapsto \Delta, A$}
+        \UnaryInfC{$\neg A, \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\neg \mapsto)$ \inlineitem
+        \AxiomC{$A, \Gamma\mapsto \Delta$}
+        \UnaryInfC{$\Gamma \mapsto \Delta, \neg A$}
+        \DisplayProof $\quad (\mapsto \neg)$
+
+        \vspace{4mm}
+
+        Далее идут чуть более сложные, двухпосылочные правила. Рассуждение тут строится похожим образом: если существует контрпример у нижней формулы, то он точно существует у какой-то из верхних формул, и наоборот:
+
+        \vspace{2mm}
+
+        \item \AxiomC{$A, \Gamma \mapsto \Delta$}
+        \AxiomC{$B, \Gamma \mapsto \Delta$}
+        \BinaryInfC{$(A \lor B), \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\lor \mapsto)$ \inlineitem
+        \AxiomC{$\Gamma \mapsto \Delta, A$}
+        \AxiomC{$\Gamma \mapsto \Delta, B$}
+        \BinaryInfC{$\Gamma \mapsto \Delta, (A \land B)$}
+        \DisplayProof $\quad (\mapsto \land)$
+
+        \vspace{4mm}
+        
+        Введем еще правила для импликации:
+
+        \vspace{2mm}
+
+        \item \AxiomC{$\Gamma \mapsto \Delta, A$}
+        \AxiomC{$B, \Gamma \mapsto \Delta$}
+        \BinaryInfC{$(A \to B), \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\to \mapsto)$ \inlineitem
+        \AxiomC{$A, \Gamma \mapsto \Delta, B$}
+        \UnaryInfC{$\Gamma \mapsto \Delta, (A \to B)$}
+        \DisplayProof $\quad (\mapsto \to)$
+
+        \vspace{4mm}
+
+        Наконец введм правило ``сечения'', которое сильно упрощает вывод:
+
+        \vspace{2mm}
+
+        \item \AxiomC{$A, \Gamma \mapsto \Delta$}
+        \AxiomC{$\Gamma \mapsto \Delta, A$}
+        \BinaryInfC{$\Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (Cut)$
+\end{enumerate}
+
+\vspace{5mm}
+
+Разберем эти правила на каком-то примере.
+
+\begin{example}
+    Докажем, что следующая формула является тавтологией: \[ (A \to B) \to (\neg B \to \neg A) \]
+    Для начала сделаем из этого секвенцию: \[ \mapsto (A \to B) \to (\neg B \to \neg A) \quad\quad (1) \]
+    (1) получается из (2) по правилу введения импликации после стрелки (восьмое правило). Таким образом: \[ (A \to B) \mapsto  (\neg B \to \neg A) \quad\quad (2) \]
+    (2) получается из (3) по тому же правилу: \[ (A \to B), \neg B \mapsto  \neg A \quad\quad (3) \]
+    (3) получается из (4) по правлу отрицания после стрелки (четвертое правило): \[ (A \to B), \neg B, A \mapsto  \quad\quad (4) \]
+    (4) получается из (5) по правилу отрицания до стрелки (третье правило): \[ (A \to B), A \mapsto B \quad\quad (5) \]
+    (5) получается из (6) и (7) по правилу импликации до стрелки (седьмое правило): \begin{gather*}
+        A \mapsto B, A \quad\quad (6) \\
+        B, A \mapsto B \quad\quad (7)
+    \end{gather*}
+    Мы пришли к тому, что (6) и (7) являются аксиомами, следовательно, у них нет контрпримеров, следовательно у (5) нет контрпримера и т.д. В итоге получаем, что у (1) нет контрпримера, значит, это тавтология.
+
+    \begin{theorem}
+        (О полноте и корректности) \[ \Gamma \mapsto \Delta - \text{тавтология} \Longleftrightarrow \Gamma \mapsto \Delta \text{ выводима из аксиом} \]
+    \end{theorem}
+    \begin{proof}
+        \quad
+
+        $\quad "\Leftarrow":$ Эта стрелка означает корректность, и она очевидна, так как про все правила мы проверили, что если всё сверху является тавтологией, то и следствие является тавтологией.
+
+        $\quad "\Rightarrow":$ Эта полнота, т.е. нам надо доказать, что если секвенция являестя тавтологией, то она выводима.
+        Будем строить дерево вывода: \begin{itemize}
+            \item В корне будет наша изначальная секвенция.
+            \item В потомках (их может быть 1 или 2) будут находиться формулы, выведенные по правилу, которое возможно применить.
+        \end{itemize}
+        \quad Заметим, что на каждом уровне, число связок строго уменьшается, значит, в какой-то момент мы дойдем до листа, имеющего вид $V_1 \mapsto V_2$, где $V_1, V_2$ -- наборы переменных. Если это аксиома, то мы победили, так как нашли последовательность вывода. Если нет, то мы можем построить контрпример (переменные из $V_1$ сделать равными 1, а из $V_2$ сделать равными 0). Но тогда это будет контрпримером для изначальной секвенции. Получили противоречие, значит в листе обязательно аксиома.
+    \end{proof}
+\end{example}
+
+\subsection{Выводимость из списка формул}
+\begin{conj}
+    Список формул $\Gamma$ (возможно бесконечный) называется непротиворечивым, если $\forall \varphi_1, \dots, \varphi_n \in \Gamma$ формула $\bigwedge\limits_{i = 1}^n \varphi_i$ выполнима.
+\end{conj}
+
+\vspace{2mm}
+
+\textbf{Лемма 1}. Если $\Gamma$ непротиворечив и $A$ -- произвольная формула, то либо список ($\Gamma, A$) непротиворечив, либо список ($\Gamma, \neg A$) непротиворечив.  
+
+\begin{proof}
+    Ну пусть это не так, и существуют два набора функций $\varphi_1, \dots, \varphi_n$ и $\psi_1, \dots, \psi_m$, что \begin{gather*}
+        \begin{cases}
+            \varphi_1 \land \dots \land \varphi_n \land A - \text{противоречива (т.е. невыполнима)} \\
+            \psi_1 \land \dots \land \psi_m \land \neg A - \text{противоречива (т.е. невыполнима)}
+        \end{cases}
+    \end{gather*}
+    \quad Но тогда посмотрим на $\varphi_1 \land \varphi_n \land \psi_1 \land \dots \land \psi_m$. По условию существует интерпретация $I$, что в ней эта формула выполнима. Но тогда очевидно какая-то из формул системы не будет невыполнимой, противоречие.
+\end{proof}
+
+\vspace{5mm}
+
+\begin{conj}
+    Непротиворечивый список формул $\Gamma$ называется полным, если для любой формулы $A$ либо $A \in \Gamma$, либо $\neg A \in \Gamma$.
+\end{conj}
+
+\vspace{2mm}
+
+\textbf{Лемма 2.} Если $\Gamma$ -- непротиворечивый список формул, то существует полный непротиворечивый $\Gamma'$ такой, что $\Gamma \subset \Gamma'$.
+
+\begin{proof}
+    \textit{Докажем для случая, когда множество переменных, из которых строятся формулы, не более, чем счетно.} Выпишем все возможные формулы: $A_1, A_2, \dots$ Введем последовательность $\Gamma_n$: \begin{itemize}
+        \item $\Gamma_0 := \Gamma$
+        \item Для $i > 0$ имеем $\Gamma_i := \Gamma_{i - 1} \cup A_i$ или $\Gamma_i := \Gamma_{i - 1} \cup \neg A_i$ в зависимости от того, какой список получается непротиворечивым (а какой-то получается согласно Лемме 1!).
+    \end{itemize}
+    \quad Тогда $\Gamma' = \bigcup\limits_{i \in \N} \Gamma_i$. Очевидно, что такой $\Gamma'$ будет подходить. 
+\end{proof}
+
+\vspace{5mm}
+
+\begin{conj}
+    Список формул $\Gamma$ (возможно бесконечный) называется совместным, если существует интерпретация $I$, т.ч. $\forall \varphi \in \Gamma \quad \varphi[I] = 1$.
+\end{conj}
+
+\begin{theorem}
+    (О компактности) \[ \Gamma \text{ совместен } \Longleftrightarrow \Gamma \text{ непротиворечив} \]
+\end{theorem}
+
+\begin{proof}
+    \textit{Докажем для случая, когда множество переменных, из которых строятся формулы, не более, чем счетно.}
+
+    $\quad "\Rightarrow":$ Очевидно, ведь если можем выполнить все, то можем выполнить и любое конечное количество.
+
+    $\quad "\Leftarrow":$ Воспользуемся Леммой 2, чтобы дополнить список $\Gamma$ до полного. Теперь заметим, что для любой переменной $x$ будет выполняться, что либо $x \in \Gamma$, либо $\neg x \in \Gamma$. Причем это не может происходить одновременно, потому что тогда нарушится непротиворечивость. Тогда определим интерпретацию $I$ следующим образом: \[ I(x) = \begin{cases}
+        1, \text{ если } x \in \Gamma \\
+        0, \text{ если } \neg x \in \Gamma
+    \end{cases} \]
+    \quad Тогда $I$ будет выполнять все формулы из $\Gamma$ и опровергать все формулы не из $\Gamma$. Это легко показать индукцией по построению формулы (База это сами переменные, Переход это тупое рассмотрение случаев на последнюю примененную логичскую операцию). Таким образом, мы доказали стрелку в обратную сторону.
+\end{proof}
+
+\vspace{3mm}
+
+Эту теорему мы скоро используем, а пока введем пару определений.
+
+\begin{conj}
+    Формула $\varphi$ синтаксически выводится из списка формул $\Gamma$, если \[ \exists \, \varphi_1, \dots, \varphi_n \in \Gamma : \; \varphi_1, \dots, \varphi_n \mapsto \varphi \text{ выводима из аксиом} \]
+    Обозначается, как $\Gamma \vdash \varphi$.
+\end{conj}
+
+\vspace{5mm}
+
+\begin{conj}
+    Формула $\varphi$ семантически следует из списка $\Gamma$, если любая интерпретация $I$, выполняюшая все формулы из $\Gamma$, выполняет и формулу $\varphi$.
+
+    Обозначается, как $\Gamma \models \varphi$.
+\end{conj}
+
+\vspace{5mm}
+
+\begin{theorem}
+    (О полноте исчисления высказываний в сильной форме) \[ \underbrace{\Gamma \vdash \varphi}_{\text{синтаксис}} \Longleftrightarrow \underbrace{\Gamma \models \varphi}_{\text{семантика}} \]
+\end{theorem}
+\begin{proof}
+    \quad
+
+    $\quad "\Rightarrow":$ Легко, так как если $\Gamma \vdash \varphi$, то $\exists \varphi_1, \dots, \varphi_n \, : \; (\bigwedge\limits_{i = 1}^n \varphi_i) \to \varphi$  -- тавтология. Тогда если какая-то интерпретация выполняет все формулы из $\Gamma$, то она обязана выполнять и $\varphi$, иначе импликация не будет работать.
+
+    $\quad "\Leftarrow":$ Имеем $\Gamma \models \varphi$. Заметим, что список $(\Gamma, \neg \varphi)$ будет невыполним. Тогда по теореме о компактности заключаем, что $(\Gamma, \neg \varphi)$ противоречив. То есть \[ \exists \varphi_1, \dots, \varphi_n \, : \; \bigwedge_{i = 1}^n \varphi_n \land \neg \varphi - \text{противоречива} \]
+    \quad\quad Проотрицав это выражение, получаем, что $\bigvee\limits_{i = 1}^n \neg \varphi_i \lor \varphi$ -- тавтология. Заметим, что эта формула не что иное как импликация $\varphi_1 \land \dots \land \varphi_n \to \varphi$, так как импликация $a \to b$ задается как $\neg a \lor b$ в стандартном базисе. Таким образом, получаем, что  $\varphi_1 \land \dots \land \varphi_n \to \varphi$ -- тавтология, а это значит, что $\Gamma \vdash \varphi$.
+\end{proof}
+
+\vspace{3mm}
+
+Введем эквивалентное определение синтаксической выводимости.
+
+\begin{theorem} (Поехавшая)
+    $\Gamma \vdash \varphi$ эквивалентно тому, что $(\mapsto \varphi)$ выводимо из обычных аксиом и $(\mapsto \psi)$, где $\psi \in \Gamma$ (то есть мы расширяем множество аксиом).
+\end{theorem}
+\begin{proof} \quad
+
+    $\quad "\Rightarrow":$ Имеем $\Gamma \vdash \varphi$. Это по определению означает, что \[ \exists \psi_1, \dots, \psi_n \; : \; \psi_1, \dots, \psi_n \mapsto \varphi \text{ выводится из аксиом} \]
+    \quad\quad Тогда применяя правило сечения с $(\mapsto \psi_i)$ (мы считаем, что это тоже аксиома), мы будем избавляться от $\psi_i$, и в итоге останется только $\mapsto \varphi$.
+
+    $\quad "\Leftarrow":$ Если мы из аксиом $\psi_1, \dots, \psi_n$ смогли вывести $\varphi$, то это значит, что $\varphi$ семантически следует из них. А мы поняли, что это то же самое, что и $\Gamma \vdash \varphi$.
+\end{proof}

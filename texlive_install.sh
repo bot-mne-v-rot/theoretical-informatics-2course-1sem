@@ -78,7 +78,10 @@ tlmgr install   \
   enumerate \
   wrapfig \
   graphicx \
-  extarrows
+  extarrows \
+  bussproofs \
+  multicol \
+  enumitem \
 
 
 # Keep no backups (not required, simply makes cache bigger)
