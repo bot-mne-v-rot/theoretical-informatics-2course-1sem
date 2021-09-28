@@ -99,3 +99,69 @@
     \end{gather*}
 \end{conj}
 
+Накидаем (лютому) еще определений. 
+\begin{conj}
+    Пусть формула $\varphi [I, \pi]$ и $\varphi$ содержит $k$ свободных перемнных. 
+    \begin{gather*}
+        \varphi[I] : M^k \longrightarrow \{0, 1\}
+    \end{gather*}
+    Тогда предикат следующего вида:
+    \begin{gather*}
+        P : M^k \longrightarrow \{0, 1\} 
+    \end{gather*}
+    Называется \textbf{выразимым} в $(\mathcal{F}, \mathcal{P})$, если $\mathcal{P}$ можно задать формулой с $k$ параметрами. 
+\end{conj}
+
+\begin{conj}
+    \textbf{Арифметика}:
+    \begin{align*}
+        \mathcal{N} &= \{0, 1, 2, \dots\} \\
+        \mathcal{P} &= \{=\} \\
+        \mathcal{F} &= \{+, \times \}
+    \end{align*}
+\end{conj}
+Примеры выразимых в арифметике предикатов:
+\begin{enumerate}
+    \item $x = 0 \qquad x+x=x$
+    \item $x=1 \qquad x \times x = x \land \lnot (x=0)$
+    \item $x \geqslant y \qquad \exists z \; (x = y + z)$
+    \item $x = 238$:
+    \begin{gather*}
+        \forall y \quad ((y=1) \longrightarrow x = \underbrace{y + y + \dots + y}_{238 \text{ раз}})
+    \end{gather*}
+    \item $x \mid y \qquad \exists z \; (y = x \times z)$
+    \item ``$x$ -- простое число'' \qquad $\forall y \; ((y \mid x) \longrightarrow ((y=1) \lor (y=x)))$
+    \item ``$r$ -- остаток при делении $a$ на $b$'' \qquad $\exists q \; (a = qb + r \land r < b)$
+    \item ``$x$ -- степень 2'' \qquad $\forall y \; (((y \mid x) \land (y \text{ -- простое})) \longrightarrow ($``$y=2$''$))$
+    \item ``$x$ -- степень 4'' \qquad ``$x$ -- степень 2'' $\land \; \exists y : \;(y \times y = x)$
+    \item ``$x$ -- степень 6'' \qquad хурма какая-то, которую придумал, как записаывать Гёдель. Делается с помощью КТоО и двух следующих лемм: 
+\end{enumerate}
+\begin{theorem}(Китайская теорема об остатках)
+
+    Пусть $b_1, \dots, b_n$ -- взаимно простые числа. $r_1, \dots, r_n$ -- натуральные числа. Тогда:
+        \begin{gather*}
+            \exists A : \quad A \equiv r_i \operatorname{mod} b_i
+        \end{gather*}
+\end{theorem}
+
+\begin{lemma}
+    $\forall k \in \N \; \exists b \in \N$: числа $b+1, 2b+1, 3b+1, \dots, kb+1$ взаимно просты. 
+\end{lemma}
+\begin{proof}
+    \begin{gather*}
+        \text{НОД}((ib+1), (jb+1)) \mid (j-i) \\
+        b = C \times k! \qquad C \in \N \qquad (j-i)b
+    \end{gather*}
+\end{proof}
+
+\begin{lemma}
+    $\forall x_1, \dot, x_n \in \N \quad \exists a,b \in \N$:
+   \begin{gather*}
+       x_i = a \operatorname{mod} (b_i + 1)
+   \end{gather*}
+\end{lemma}
+\begin{proof}
+    Предыдущая лемма + китайская теорема об остатках. 
+\end{proof}
+
+\notice Не каждый предикат выразим в арифметике. 
