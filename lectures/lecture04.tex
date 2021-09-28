@@ -1,0 +1,101 @@
+\section{Предикатная логика(логика первого порядка)}
+По этой теме можно почитать книги Н.К. Верещагина и А.Х.Шеня -- Языки исчисления. 
+\subsection{Предикатные формулы}
+\begin{conj}
+    Введем множество $\mathcal{F}$ -- множество функциональных символов(для обозначения функций), $\mathcal{P}$ -- множество предикатных символов(для обозначения предикатов).
+    $(\mathcal{F}, \mathcal{P})$ -- сигнатура. 
+    Функции будут иметь вид:
+    \begin{gather*}
+        M^n \longrightarrow M
+    \end{gather*} 
+    Предикаты:
+    \begin{gather*}
+        M^n \longrightarrow \{0, 1\} 
+    \end{gather*}
+    Множества будут выглядить следующим образом:
+    \begin{gather*}
+        \mathcal{F} = \{f^{(3)}, g^{(1)}, h^{(2)}, c^{(0)}\} \\
+        \mathcal{P} = \{p^{(2)}, q^{(0)}, s^{(1)}\} \\
+        \Gamma = \{x_1, x_2, \dots\} \text{ -- предметная переменная}
+    \end{gather*}
+\end{conj}
+\begin{conj}
+    Введем понятие \textbf{терма}:
+    \begin{enumerate}
+        \item $x \in \Gamma \Longrightarrow x$ -- терм 
+        \item $f^{(k)} \in \mathcal{F}$, $t_1, t_2, \dots, t_k$ -- термы $\Longrightarrow f^{(k)} (t_1, t_2, \dots, t_k)$ -- терм
+        \item Множество термов -- это минимальное по включению множество строк, которые удовлетворяют условиям (1) и (2). 
+    \end{enumerate}
+\end{conj}
+
+\textbf{Примеры:}
+% TODO
+
+\begin{conj}
+    Пусть $p^{(n)} \in \mathcal{P}, t_1, t_2, \dots, t_n$ -- термы, тогда 
+    $p^{(n)} (t_1, t_2, \dots, t_n)$ -- \textbf{атомарная формула}. То есть атомарные(элементарные) формула -- формулы, получающиеся
+    приписыванием предикатного символа.  
+\end{conj}
+
+\begin{conj}
+    Введем понятие \textbf{предикатной формулы}:
+    \begin{enumerate}
+        \item Атомрная формула -- это предикатная формула
+        \item Пусть $\varphi, \psi$ -- предикатные формулы, тогда $\lnot \varphi, \varphi \land \psi, \varphi \lor \psi$ -- тоже предикатные формулы. 
+        \item Пусть $\varphi$ -- предикатная формула, тогда для $x \in \Gamma, \; \forall x \varphi, \exists x \varphi$ -- тоже предикатные формулы.  
+    \end{enumerate} 
+\end{conj}
+
+\begin{conj}
+    Каждая переменная может быть \textbf{связанной} или \textbf{свободной}. Переменная называется связанной, если она находится в области действия квантора и свободной(параметром формулы) иначе.
+\end{conj}
+
+\begin{conj}
+    Введем понятие \textbf{интерпретации для предикатных формул}. Нам понадабятся некоторые 
+    второстепенные понятия. 
+    \textbf{Носитель интерпретации} -- любое непустое множество. 
+    \begin{gather*}
+        \forall f^{(k)} \in \mathcal{F} \textbf{ задаем отображение } M^k \longrightarrow M \\
+        \forall p^{(k)} \in \mathcal{P} \textbf{ задаем отображение } M^k \longrightarrow \{0, 1\}
+    \end{gather*}
+    Оценка -- это отображение $\Gamma \longrightarrow M$. 
+\end{conj}
+
+\begin{conj}
+    Введем понятие значения формулы $\varphi$ при интерпретации $I$ и оценке $\pi$:
+
+    Значение терма $t$ при интерпретации $I$ и оценке $\pi$ зададим теперь следующим образом:
+    \begin{enumerate}
+        \item $x \in \Gamma \qquad x[I, \pi] := \pi(x)$
+        \item $f^{(k)}, \; t_1, t_2, \dots, t_k$ -- термы, тогда:
+        \begin{gather*}
+            f^{(k)}(t_1, t_2, \dots, t_k) [I, \pi] := f^{(k)}_I (t_1[I, \pi], \dots, t_k[I, \pi])
+        \end{gather*}
+    \end{enumerate}
+    Значение атомарной формулы зададим следующим образом:
+    \begin{gather*}
+        p^{(k)} (t_1, \dots, t_k)[I, \pi] := p^{(k)}_I (t_1[I, \pi], \dots, t_k[I, \pi])
+    \end{gather*}
+
+    Зададим теперь для логических связок и квантров:
+    \begin{enumerate}
+        \item \begin{gather*}
+            \lnot \varphi [I, \pi] := \lnot (\varphi [I, \pi]), \text{ для остальных значений очевидно}
+        \end{gather*}
+        \item \begin{gather*}
+            \exists x \; \varphi[I, \pi] := \bigvee\limits_{a \in M} \varphi [I, \pi^{x \leftarrow a}] 
+        \end{gather*}
+        \item \begin{gather*}
+            \forall x \; \varphi[I, \pi] := \bigwedge\limits_{a \in M} \varphi [I, \pi^{x \leftarrow a}] 
+        \end{gather*}
+    \end{enumerate}
+\end{conj}
+
+\begin{conj}
+    \textbf{Общезначимые формулы} -- это формулы, которые истинны во всех интерполяциях и при всех оценках. 
+    Пример:
+    \begin{gather*}
+        \forall x \; (P(x) \longrightarrow P(x))
+    \end{gather*}
+\end{conj}
+
