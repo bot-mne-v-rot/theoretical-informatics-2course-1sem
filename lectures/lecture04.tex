@@ -14,9 +14,9 @@
     \end{gather*}
     Множества будут выглядить следующим образом:
     \begin{gather*}
-        \mathcal{F} = \{f^{(3)}, g^{(1)}, h^{(2)}, c^{(0)}\} \\
-        \mathcal{P} = \{p^{(2)}, q^{(0)}, s^{(1)}\} \\
-        \Gamma = \{x_1, x_2, \dots\} \text{ -- предметная переменная}
+        \mathcal{F} = \{f^{(2)}, g^{(1)}, h^{(3)}, c^{(0)}\} \\
+        \mathcal{P} = \{p^{(1)}, q^{(2 )}, s^{(0)}\} \\
+        \Gamma = \{x_1, x_2, \dots\} \text{ -- предметные переменные}
     \end{gather*}
 \end{conj}
 \begin{conj}
@@ -28,43 +28,48 @@
     \end{enumerate}
 \end{conj}
 
-\textbf{Примеры:}
-% TODO
+\textbf{Примеры.} Используем сигнатуру, объявленную чуть выше: \[ f(x, y), f(x, x), g(f(x, x)), f(x, c^{(0)}) \]
+
+\vspace{3mm}
 
 \begin{conj}
     Пусть $p^{(n)} \in \mathcal{P}, t_1, t_2, \dots, t_n$ -- термы, тогда 
-    $p^{(n)} (t_1, t_2, \dots, t_n)$ -- \textbf{атомарная формула}. То есть атомарные(элементарные) формула -- формулы, получающиеся
+    $p^{(n)} (t_1, t_2, \dots, t_n)$ -- \textbf{атомарная формула}. То есть атомарные(элементарные) формулы -- формулы, получающиеся
     приписыванием предикатного символа.  
 \end{conj}
 
 \begin{conj}
     Введем понятие \textbf{предикатной формулы}:
     \begin{enumerate}
-        \item Атомрная формула -- это предикатная формула
-        \item Пусть $\varphi, \psi$ -- предикатные формулы, тогда $\lnot \varphi, \varphi \land \psi, \varphi \lor \psi$ -- тоже предикатные формулы. 
-        \item Пусть $\varphi$ -- предикатная формула, тогда для $x \in \Gamma, \; \forall x \varphi, \exists x \varphi$ -- тоже предикатные формулы.  
+        \item Атомрная формула -- это предикатная формула.
+        \item Пусть $\varphi, \psi$ -- предикатные формулы, тогда $\lnot \varphi, \varphi \land \psi, \varphi \lor \psi, \varphi \to \psi$ -- тоже предикатные формулы. 
+        \item Пусть $\varphi$ -- предикатная формула, тогда для $x \in \Gamma, \; \forall x \, \varphi, \exists x \, \varphi$ -- тоже предикатные формулы.  
     \end{enumerate} 
 \end{conj}
+
+\textbf{Пример.} Используем ту же сигнатуру: \[ \forall x \; \exists y \; (p(f(x, y)) \to s) \]
+
+\vspace{3mm}
 
 \begin{conj}
     Каждая переменная может быть \textbf{связанной} или \textbf{свободной}. Переменная называется связанной, если она находится в области действия квантора и свободной(параметром формулы) иначе.
 \end{conj}
 
 \begin{conj}
-    Введем понятие \textbf{интерпретации для предикатных формул}. Нам понадабятся некоторые 
+    Введем понятие \textbf{интерпретации для предикатных формул}. Нам понадобятся некоторые 
     второстепенные понятия. 
-    \textbf{Носитель интерпретации} -- любое непустое множество. 
+    \textbf{Носитель интерпретации} -- любое непустое множество $M$.
     \begin{gather*}
-        \forall f^{(k)} \in \mathcal{F} \textbf{ задаем отображение } M^k \longrightarrow M \\
-        \forall p^{(k)} \in \mathcal{P} \textbf{ задаем отображение } M^k \longrightarrow \{0, 1\}
+        \forall f^{(k)} \in \mathcal{F} \text{ задаем отображение } f^{(k)}_I: M^k \longrightarrow M \\
+        \forall p^{(k)} \in \mathcal{P} \text{ задаем отображение } p^{(k)}_I: M^k \longrightarrow \{0, 1\}
     \end{gather*}
-    Оценка -- это отображение $\Gamma \longrightarrow M$. 
+    Оценка -- это отображение $\Gamma \longrightarrow M$. Оценка нужная для свободных переменных.
 \end{conj}
 
 \begin{conj}
-    Введем понятие значения формулы $\varphi$ при интерпретации $I$ и оценке $\pi$:
+    Введем понятие \textbf{значения формулы $\varphi$ при интерпретации $I$ и оценке $\pi$}.
 
-    Значение терма $t$ при интерпретации $I$ и оценке $\pi$ зададим теперь следующим образом:
+    \quad Значение терма $t$ при интерпретации $I$ и оценке $\pi$ зададим теперь следующим образом:
     \begin{enumerate}
         \item $x \in \Gamma \qquad x[I, \pi] := \pi(x)$
         \item $f^{(k)}, \; t_1, t_2, \dots, t_k$ -- термы, тогда:
@@ -72,15 +77,15 @@
             f^{(k)}(t_1, t_2, \dots, t_k) [I, \pi] := f^{(k)}_I (t_1[I, \pi], \dots, t_k[I, \pi])
         \end{gather*}
     \end{enumerate}
-    Значение атомарной формулы зададим следующим образом:
+    \quad Значение атомарной формулы зададим следующим образом:
     \begin{gather*}
         p^{(k)} (t_1, \dots, t_k)[I, \pi] := p^{(k)}_I (t_1[I, \pi], \dots, t_k[I, \pi])
     \end{gather*}
 
-    Зададим теперь для логических связок и квантров:
+    \quad Зададим теперь для логических связок и кванторов:
     \begin{enumerate}
         \item \begin{gather*}
-            \lnot \varphi [I, \pi] := \lnot (\varphi [I, \pi]), \text{ для остальных значений очевидно}
+            \lnot \varphi [I, \pi] := \lnot (\varphi [I, \pi]), \text{ для остальных связок аналогично}
         \end{gather*}
         \item \begin{gather*}
             \exists x \; \varphi[I, \pi] := \bigvee\limits_{a \in M} \varphi [I, \pi^{x \leftarrow a}] 
@@ -91,8 +96,14 @@
     \end{enumerate}
 \end{conj}
 
+\textbf{Пример.} Используем сигнатуру с $\mathcal{F} = \{\}, \mathcal{P} = \{>\}:$ \[ \forall x \; \exists y \; (y > x) \]
+Зададим интерпретацию на множестве $\Z$ и обычный предикат $>$ на ней. Тогда в этой интерпретации формула будет верна. Заметим, что оценка тут не важна, так как нет свободных переменных. Если же мы зададим множество, как $M := \{0, 1\}$, и обычный предикат $>$, то в такой интерпретации формула очевидно будет ложна.
+
+
+\vspace{3mm}
+
 \begin{conj}
-    \textbf{Общезначимые формулы} -- это формулы, которые истинны во всех интерполяциях и при всех оценках. 
+    \textbf{Общезначимые формулы} -- это формулы, которые истинны во всех интерпретациях и при всех оценках. 
     Пример:
     \begin{gather*}
         \forall x \; (P(x) \longrightarrow P(x))
@@ -101,16 +112,18 @@
 
 Накидаем (лютому) еще определений. 
 \begin{conj}
-    Пусть формула $\varphi [I, \pi]$ и $\varphi$ содержит $k$ свободных перемнных. 
+    Пусть формула $\varphi$ содержит $k$ свободных перемнных. Тогда если у нас задана просто интерпретация без оценки, то можно сказать, что формула $\varphi$ в этой интерпретации задает предикат вида:
     \begin{gather*}
         \varphi[I] : M^k \longrightarrow \{0, 1\}
     \end{gather*}
-    Тогда предикат следующего вида:
+    Наоборот, предикат
     \begin{gather*}
         P : M^k \longrightarrow \{0, 1\} 
     \end{gather*}
-    Называется \textbf{выразимым} в $(\mathcal{F}, \mathcal{P})$, если $\mathcal{P}$ можно задать формулой с $k$ параметрами. 
+    называется \textbf{выразимым} в $(\mathcal{F}, \mathcal{P})$, если $\mathcal{P}$ можно задать формулой с $k$ параметрами. 
 \end{conj}
+
+\vspace{3mm}
 
 \begin{conj}
     \textbf{Арифметика}:
@@ -125,16 +138,16 @@
     \item $x = 0 \qquad x+x=x$
     \item $x=1 \qquad x \times x = x \land \lnot (x=0)$
     \item $x \geqslant y \qquad \exists z \; (x = y + z)$
-    \item $x = 238$:
+    \item $x = 239$:
     \begin{gather*}
-        \forall y \quad ((y=1) \longrightarrow x = \underbrace{y + y + \dots + y}_{238 \text{ раз}})
+        \forall y \quad ((y=1) \longrightarrow x = \underbrace{y + y + \dots + y}_{239 \text{ раз}})
     \end{gather*}
     \item $x \mid y \qquad \exists z \; (y = x \times z)$
     \item ``$x$ -- простое число'' \qquad $\forall y \; ((y \mid x) \longrightarrow ((y=1) \lor (y=x)))$
     \item ``$r$ -- остаток при делении $a$ на $b$'' \qquad $\exists q \; (a = qb + r \land r < b)$
     \item ``$x$ -- степень 2'' \qquad $\forall y \; (((y \mid x) \land (y \text{ -- простое})) \longrightarrow ($``$y=2$''$))$
     \item ``$x$ -- степень 4'' \qquad ``$x$ -- степень 2'' $\land \; \exists y : \;(y \times y = x)$
-    \item ``$x$ -- степень 6'' \qquad хурма какая-то, которую придумал, как записаывать Гёдель. Делается с помощью КТоО и двух следующих лемм: 
+    \item ``$x$ -- степень 6'' \qquad так просто не получится, но Гёдель придумал решение с помощью китайской теоремы об остатках 
 \end{enumerate}
 \begin{theorem}(Китайская теорема об остатках)
 
@@ -144,24 +157,31 @@
         \end{gather*}
 \end{theorem}
 
-\begin{lemma}
-    $\forall k \in \N \; \exists b \in \N$: числа $b+1, 2b+1, 3b+1, \dots, kb+1$ взаимно просты. 
-\end{lemma}
+Заведем лемму, которая нам поможет выдавать много взаимно простых чисел.
+
+\textbf{Лемма 1.}
+    $\forall k \in \N$ существует сколь угодно большое $b \in \N$, т.ч. числа $b+1, 2b+1, 3b+1, \dots, kb+1$ взаимно просты. 
+
 \begin{proof}
-    \begin{gather*}
-        \text{НОД}((ib+1), (jb+1)) \mid (j-i) \\
-        b = C \times k! \qquad C \in \N \qquad (j-i)b
-    \end{gather*}
+    $\gcd((ib + 1), (jb + 1))$ обязан делить разницу между ними: \[ \gcd((ib + 1), (jb + 1)) \mid (j - i)b \]
+    $(ib + 1)$ и $(jb + 1)$ взаимно просты с $b$, поэтому: \[ \gcd((ib + 1), (jb + 1)) \mid (j - i) \]
+    Возьмем $b = C * k!$ при  любом $C \in \N$. Оно будет подходить, так как $(j - i)$ будет делить $b$, а как мы поняли $\gcd((ib + 1), (jb + 1))$ не будет делить $b$.
 \end{proof}
 
-\begin{lemma}
-    $\forall x_1, \dot, x_n \in \N \quad \exists a,b \in \N$:
+\vspace{3mm}
+
+Применим ее в другой лемме.
+
+\textbf{Лемма 2.}
+    $\forall x_1, \dots, x_n \in \N \quad \exists a,b \in \N$:
    \begin{gather*}
-       x_i = a \operatorname{mod} (b_i + 1)
+       x_i = a \operatorname{mod} (bi + 1)
    \end{gather*}
-\end{lemma}
+
 \begin{proof}
-    Предыдущая лемма + китайская теорема об остатках. 
+    Лемма 1  + китайская теорема об остатках. 
 \end{proof}
 
-\notice \; Не каждый предикат выразим в арифметике. 
+Теперь с помощью леммы 2 мы можем закодировать любую конечную последовательность натуральных чисел. Например, выразим предикат "$x$ -- степень 6". Для этого с помощью $a$, $b$ и $k$ закодируем последовтельность, т.ч. $x_0 = 1, x_k = x$ и $\forall i < k \; x_{i + 1} = 6 \cdot x_i$: \[ \exists k \; \exists a, b \; \textbf(a \operatorname{mod} (b + 1) = 1 \textbf) \land \textbf(a \operatorname{mod} (bk + 1) = x \textbf) \land \textbf(\forall i \; ((i < k) \to (a \operatorname{mod} (b(i+1) + 1) = 6 \cdot a \operatorname{mod} (bi + 1))) \textbf) \]
+
+Это довольно сильный и универсальный метод.
