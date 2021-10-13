@@ -1,0 +1,189 @@
+\subsection{Метод автоморфизмов}
+
+\begin{conj}
+    Пусть $I$ --- интерпретация сигнатуры $(\mathcal{F}, \mathcal{P})$, $M$ --- носитель этой интерпретации. Биекция $\alpha : M \to M$ называется \textbf{автоморфизмом}, если:
+    \begin{enumerate}
+        \item Любой $p^{(k)} \in \mathcal{P}$ устойчив относительно $\alpha$, т.е.:
+        $$ p^{(k)}_{I} (\alpha(m_1), \alpha(m_2), \dots, \alpha(m_k)) = p^{(k)}_{I}(m_1, m_2, \dots, m_k)$$
+        \item Любая $f^{(k)} \in \mathcal{F}$ устойчива относительно $\alpha$, т.е.:
+        $$ f^{(k)}_I (\alpha(m_1), \alpha(m_2), \dots, \alpha(m_k)) = \alpha(f^{(k)}_I(m_1, m_2 , \dots, m_k))$$
+    \end{enumerate} 
+\end{conj}
+
+\begin{theorem}
+    Если предикат $Q$ выразим в интерпретации $I$, то $Q$ устойчив относительно автоморфизмов $I$.
+\end{theorem}
+\textbf{Пример.} \\
+Рассмотрим $(\Z, =, +)$. Покажем, что предикат $x < y$ невыразим.
+Рассмотрим $\alpha(x) = -x$. Это автоморфизм, т.к.:
+\begin{itemize}
+    \item $-m = -n \Leftrightarrow m = n$
+    \item $(-m) + (-n) = -(m + n)$
+\end{itemize}
+Но $a < b \nRightarrow {-a < -b}$.
+\begin{proof}
+    Пусть $\pi : X \to M$ --- оценка.
+    \begin{enumerate}
+        \item Пусть $t$ --- терм. Докажем, что $t[I, \alpha \circ \pi] = \alpha(t[I, \pi])$.
+        \begin{itemize}
+            \item Если $t = x \in \Gamma$ --- переменная, то это просто по определению.
+            \item Если $t = f^{(k)}(t_1, t_2, \dots, t_k)$, то воспользуемся одной из аксиом автоморфизма:
+            \begin{align*}
+                f^{(k)}(t_1, t_2, \dots, t_k)[I, \alpha \circ \pi] &= 
+                f^{(k)}_I(t_1[I, \alpha \circ \pi], t_2[I, \alpha \circ \pi], \dots, t_k[I, \alpha \circ \pi]) \\
+                &= f^{(k)}_I(\alpha(t_1[I, \pi]), \alpha(t_2[I, \pi]), \dots, \alpha(t_k[I, \pi])) \\
+                &= \alpha(f^{(k)}_I(t_1[I, \pi], t_2[I, \pi], \dots, t_k[I, \pi])) \\
+                &= \alpha(f^{(k)}_I(t_1, t_2, \dots, t_k)[I, \pi]) \\
+            \end{align*}
+            Т.е. просто по определениям вытаскиваем $\alpha$ наружу.
+        \end{itemize}
+        \item Пусть $\varphi$ --- атомарная формула. Докажем, что $\varphi[I, \alpha \circ \pi] = \varphi[I, \pi]$ аналогично предыдущему пункту:
+        \begin{align*}
+            p^{(k)}(t_1, t_2, \dots, t_k)[I, \alpha \circ \pi] &= 
+            p^{(k)}_I(t_1[I, \alpha \circ \pi], t_2[I, \alpha \circ \pi], \dots, t_k[I, \alpha \circ \pi]) \\
+            &= p^{(k)}_I(\alpha(t_1[I, \pi]), \alpha(t_2[I, \pi]), \dots, \alpha(t_k[I, \pi])) \\
+            &= p^{(k)}_I(t_1[I, \pi], t_2[I, \pi], \dots, t_k[I, \pi]) \\
+            &= p^{(k)}_I(t_1, t_2, \dots, t_k)[I, \pi] \\
+        \end{align*}
+        \item Пусть наша формула --- это $\lnot \varphi$, $\varphi \vee \psi$, $\varphi \wedge \psi$ или $\varphi \to \psi$. Тут всё достаточно просто проверяется.
+        \item Пусть наша формула имеет вид $\exists x \; \varphi$. Докажем, что $\exists x \; \varphi[I, \alpha \circ \pi] = \exists x \; \varphi[I, \pi]$.
+        \begin{align*}
+            \exists x \; \varphi[I, \alpha \circ \pi] = \bigvee_{a \in M} \varphi[I, \alpha(\pi)^{x \leftarrow a}]
+        \end{align*}
+        Т.к. $\alpha$ -- биекция, то можно заменить подстановку $x \leftarrow a$ на $x \leftarrow \alpha(a)$ ($\alpha(a)$ так же ''пробегает'' все значения). Тогда:
+        \begin{align*}
+            \exists x \; \varphi[I, \alpha \circ \pi] &= \bigvee_{a \in M} \varphi[I, \alpha(\pi)^{x \leftarrow a}] \\
+            &= \bigvee_{a \in M} \varphi[I, \alpha(\pi)^{x \leftarrow \alpha(a)}] \\
+            &= \bigvee_{a \in M} \varphi[I, \alpha(\pi^{x \leftarrow a})] \\
+            &= \bigvee_{a \in M} \varphi[I, \pi^{x \leftarrow a}] \\
+            &= \exists x \; \varphi[I, \pi]
+        \end{align*}
+        \item Для квантора всеобщности ($\forall$) все рассуждения будут точно такими же.
+    \end{enumerate}
+\end{proof}
+\notice Нам достаточна только сюръективность автоморфизма.
+
+\textbf{Примеры:}
+\begin{enumerate}
+    \item $(\Z, =, <)$. Предикат $x = 0$ невыразим. Подходит автоморфизм $x \mapsto x + 1$.
+    \item $(\Q, =, <, +)$. Предикат $x = 1$ невыразим. Подходит автоморфизм $x \mapsto \frac{x}{2}$. \\
+    Предикат $x = 0$ выразим: $x = 0 \Leftrightarrow x + x = x$.
+    \item $(\R, =, <, 0, 1)$. Предикат $x = \frac{1}{2}$ невыразим. Подходит автоморфизм $x \mapsto x^3$. 
+    \item $(\R, =, +, 0, 1)$. Все рациональные числа выразимы.
+    \begin{align*}
+        x=\frac{m}{n} &:  &\underbrace{x+x+...+x}_{n} = \underbrace{1+1+...+1}_{m} \\
+        x=-\frac{m}{n} &:  &\underbrace{x+x+...+x}_{n} + \underbrace{1+1+...+1}_{m} = 0\\
+    \end{align*}
+    Докажем, что если $\gamma \notin \Q$, то $\gamma$ невыразимо. Посмотрим на $\R$, как на линейное пространство над $\Q$, т.е. $\R$ -- векторы, $\Q$ -- скаляры. Пусть $\gamma_1 \neq \gamma_2$, $\gamma_1, \gamma_2 \notin \Q$. Тогда $(1, \gamma_1)$ -- ЛНС и $(1, \gamma_2)$ -- ЛНС. Их можно продолжить до (бесконечного) базиса.
+    \begin{align*}
+        & (1, \gamma_1) \text{  продолжим до  } (1, \gamma_1, e_1, e_2, \dots) \\
+        & (1, \gamma_2) \text{  продолжим до  } (1, \gamma_2, e_1', e_2', \dots) \\
+    \end{align*}
+    Введём отображение $\alpha : \R \to \R$. Пусть $x = \alpha_1 \cdot 1 + \alpha_2 \gamma_1 + \alpha_3 e_1 + \dots$ Тогда $\alpha(x) = \alpha_1 \cdot 1 + \alpha_2 \gamma_2 + \alpha_3 e_1' + \dots$ Т.е. мы берём число, раскладываем его по первому базису, затем те же самые координаты подставляем под второй базис. Проверим, что это автоморфизм:
+    \begin{itemize}
+        \item $\alpha(0) = 0$, т.к. базис ЛНС, а значит все коэф. равны 0.
+        \item $\alpha(1) = 1$ в силу единственности разложения и того, что 1 присутствовала и там, и там на одинаковых позициях.
+        \item $x = y \Rightarrow \alpha(x) = \alpha(y)$. Действительно,
+        в первом базисе у $x$ и $y$ были одинаковые координаты и во втором будут одинаковые.
+        \item $\alpha(x) + \alpha(y) = \alpha(x + y)$ очевидно.
+    \end{itemize}
+    Пусть был предикат $x = \gamma_1$. Если подставить $x := \gamma_1$, то предикат будет верен. Но $\alpha(\gamma_1) = \gamma_2 \neq \gamma_1$. Т.е. этот предикат не устойчив относительно $\alpha$.
+\end{enumerate} 
+
+\subsection{Элиминация кванторов}
+\begin{theorem}
+    Любой предикат, выразимый в $(\Z, S, 0, =)$, где $S(x) := x + 1$, выразим и формулой, которая не содержит кванторов.
+\end{theorem}
+\textbf{Замечание. } Говорят, что $(\Z, S, 0, =)$ допускает элиминацию кванторов.
+\begin{proof} $ $
+     
+    Избавляемся от кванторов по одному. Поймём, что нам достаточно научиться избавляться от квантора существования. Действительно:
+    $$ \forall x \; \varphi(x, y_1, \dots, y_n) \Longleftrightarrow \lnot \left(\exists x \; \lnot \varphi(x, y_1, \dots, y_n) \right)$$
+    Пусть теперь наша формула имеет вид:
+    $$ \exists x \; \underbrace{\varphi(x, y_1, \dots, y_n)}_{\text{бескванторная}} $$
+    Нам нужно научиться избавляться от $x$. Внутри $\varphi$ бывают термы следующих видов:
+    \begin{itemize}
+        \item $S(S(\dots S(x)\dots))$
+        \item $S(S(\dots S(y_i)\dots))$
+        \item $S(S(\dots S(0)\dots))$
+    \end{itemize}
+    Тогда атомарные формулы могут быть видов:
+    \begin{itemize}
+        \item $x = x + C \Leftrightarrow 0 = C$
+        \item $x = C$
+        \item $x = y + C$
+    \end{itemize}
+    Из формулы первого вида можно сразу $x$ выкинуть, т.к. от $x$ они не зависят. Константа $C$ может быть отрицательной. Например, предикат $x = -1$ можно выразить, как $S(x) = 0$.
+    Выпишем все атомарные формулы, которые встречаются в $\varphi$:
+    \begin{align*}
+        x = t_1 & \Leftrightarrow x = c_1 \\
+        x = t_2 & \Leftrightarrow x = c_2 \\
+        & \vdots \\
+        x = t_{m-k} & \Leftrightarrow x = c_{m-k} \\
+        x = t_{m-k+1} & \Leftrightarrow x = y_{i_1} + b_1 \\
+        x = t_{m-k+2} & \Leftrightarrow x = y_{i_2} + b_2 \\
+        & \vdots \\
+        x = t_m & \Leftrightarrow x = y_{i_k} + b_k \\
+    \end{align*}
+    Рассмотрим следующую дизъюнкцию:
+    $$ \varphi(t_1, y_1, \dots, y_n) \vee \dots \vee \varphi(t_m, y_1, \dots, y_n) $$
+    Мы просто подставляем в формулу вместо $x$ каждое его значение, которое где-то используется. 
+    
+    Нужно быть аккуратным при подстановке, т.к. константы могут быть отрицательными. Пусть $t_i = -3$. И у нас был какая-то атомарная формула $x = S(0)$, тогда заменим её на $0 = S(S(S(S(0))))$.
+
+    Сейчас у нас в каждом клозе хоть одна атомарная формула выполняется. Чтобы получившаяся бескванторная формула была эквивалентна исходной с квантором, нужно добавить формулу $\widetilde{\psi}$, в которой ни одна атомарная формула не выполняется. 
+
+    Пусть $\widetilde{\psi}$ --- формула, полученная из $\varphi$, заменой всех атомарных формул с $x$ на ложь. Например, на $0 = S(0)$.
+
+    Получаем:
+    $$ \exists x \; \varphi(x, y_1, \dots, y_n) \Longleftrightarrow \varphi(t_1, y_1, \dots, y_n) \vee \dots \vee \varphi(t_m, y_1, \dots, y_n) \vee \widetilde{\psi}(y_1, \dots, y_n) $$
+\end{proof}
+
+\begin{theorem}
+    $(\Q, =, <)$ допускает элиминацию кванторов.
+\end{theorem}
+\begin{proof} 
+    Достаточно избавиться от одного квантора. Пусть формула имеет вид: $$\exists x \; \underbrace{\varphi(x, y_1, \dots, y_n)}_{\text{бескванторная}}$$
+
+    Для начала избавимся от импликаций в $\varphi$:
+    $a \to b \Leftrightarrow \lnot a \vee b$.
+
+    Теперь избавимся от отрицаний в $\varphi$:
+    \begin{itemize}
+        \item $\lnot x = y \Leftrightarrow (x < y) \vee (x > y)$
+        \item $\lnot x < y \Leftrightarrow (x = y) \vee (y < x)$
+        \item В более сложных формулах просто пользуемся законами де Моргана, пока отрицание не дойдёт до атомарных формул.
+    \end{itemize}
+
+    Приведём $\varphi$ в ДНФ без отрицаний, где пропозициональные переменные --- атомарные формулы. Т.к. отрицаний и импликаций нет, это можно сделать, аккуратно раскрыв скобки: 
+    $$(a \vee b) \wedge (c \vee d) = (a \wedge c) \vee (a \wedge d) \vee (b \wedge c) \vee (b \wedge d) $$
+    Получили, что исходная формула имеет вид:
+    $$\exists x \; (D_1 \vee D_2 \vee \dots \vee D_m) \Longleftrightarrow \exists x \; D_1 \vee \exists x \; D_2 \vee \dots \vee \exists x \; D_m$$
+
+    Теперь каждая часть дизъюнкции имеет очень простой вид:
+    $$ \exists x \bigwedge \begin{sqcases}
+        x = \dots \\
+        x < \dots \\
+        x > \dots \\
+        \text{что-то без $x$}
+    \end{sqcases}$$
+    То, что, не содержит $x$ можно сразу вынести вне области видимости квантора. Более того, в правой части формул-сравнений может быть только другая переменная, т.к. $x = x$ можно сразу заменить на что-то истинное, а $x < x$ на что-то ложное.
+    
+    Получаем ещё более простую вещь, которую уже можно записать без кванторов:
+    $$ \exists x \bigwedge \begin{sqcases}
+        x < t_1 \\
+        \vdots \\
+        x < t_k \\
+        x > z_1 \\
+        \vdots \\
+        x > z_l \\
+    \end{sqcases}
+    \Longleftrightarrow
+    \bigwedge_{\substack{1 \leqslant i \leqslant k \\ 1 \leqslant j \leqslant l}} z_j < t_i$$ 
+\end{proof}
+\textbf{Замечания.} 
+\begin{enumerate}
+    \item $(\R, =, <)$ также допускает элиминацию кванторов. Просто в точности повторим рассуждения.
+    \item Формулы, истинные в $(\R, =, <)$, истинны и в $(\Q, =, <)$. Действительно, избавившись от кванторов одним и тем же алгоритмом, мы получим одинаковые формулы без кванторов. Тогда если у второй есть контрпример, у первой он тоже есть.
+\end{enumerate}
+

@@ -334,6 +334,21 @@
         #2
 \end{tcolorbox}
 }
+
+\makeatletter
+\newenvironment{sqcases}{%
+  \matrix@check\sqcases\env@sqcases
+}{%
+  \endarray\right.%
+}
+\def\env@sqcases{%
+  \let\@ifnextchar\new@ifnextchar
+  \left\lbrack
+  \def\arraystretch{1.2}%
+  \array{@{}l@{\quad}l@{}}%
+}
+\makeatother
+
 %%
 
 \begin{document}
@@ -407,6 +422,8 @@ $ $
 \import{lectures/}{lecture03.tex}
 $ $
 \import{lectures/}{lecture04.tex}
+$ $
+\import{lectures/}{lecture05.tex}
 $ $
 \end{normalsize}
 \end{document}
