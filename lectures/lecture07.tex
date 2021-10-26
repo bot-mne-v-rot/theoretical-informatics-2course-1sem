@@ -1,0 +1,359 @@
+\subsection{Исчисление секвенций для логики I-го порядка}
+\textit{В целом очень похоже на исчисление секвенций для пропозициональной логики,
+однако тут добавляются кванторы}
+
+\begin{conj}
+    Пусть фиксирована сигнатура $\sigma$. Формула $\varphi$ называется \textbf{общезначимой}, если 
+    она истинна в любой интерпретации сигнатуры $\sigma$ на любой оценке 
+\end{conj}
+
+Аналогично с пропозциональной логикой определа секвенция $\Gamma \mapsto \Delta$, где $\Gamma,\ \Delta$ - списки предикатных формул
+
+Формульная интерпретация:
+\[ \left(\bigwedge_{\varphi \in \Gamma} \varphi \right) \to \left(\bigvee_{\psi \in \Delta} \psi \right)  \]
+
+\begin{conj}
+    Контрпример к секвенции $\Gamma \mapsto \Delta$ - пара интерпретация-оценка $(I, \Pi)$, в которых 
+    все формулы из $\Gamma$ истинны и все формулы из $\Delta$ ложны.
+\end{conj}
+
+\textbf{Утверждение.} $\Gamma \mapsto \Delta$ общезначима $\leftrightarrow \Gamma \to Delta$ не имеет контрпримеров
+
+\textbf{Аксиомы:} $\Gamma \mapsto \Delta : \Gamma \cap \Delta \neq \varnothing$
+
+\textbf{Правила:}
+\begin{enumerate}
+    \item \AxiomC{$A, B, \Gamma \mapsto \Delta$}
+        \UnaryInfC{$(A \land B), \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\land \mapsto)$ \inlineitem
+        \AxiomC{$\Gamma \mapsto \Delta, A$}
+        \AxiomC{$\Gamma \mapsto \Delta, B$}
+        \BinaryInfC{$\Gamma \mapsto \Delta, (A \land B)$}
+        \DisplayProof $\quad (\mapsto \land)$
+
+        \vspace{4mm}
+
+        \item  \AxiomC{$\Gamma \mapsto \Delta, A, B$}
+        \UnaryInfC{$\Gamma \mapsto \Delta, (A \lor B)$}
+        \DisplayProof $\quad (\mapsto \lor)$ \inlineitem
+        \AxiomC{$A, \Gamma \mapsto \Delta$}
+        \AxiomC{$B, \Gamma \mapsto \Delta$}
+        \BinaryInfC{$(A \lor B), \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\lor \mapsto)$
+
+        \vspace{4mm}
+        
+        \item \AxiomC{$\Gamma \mapsto \Delta, A$}
+        \UnaryInfC{$\neg A, \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\neg \mapsto)$ \inlineitem
+        \AxiomC{$A, \Gamma\mapsto \Delta$}
+        \UnaryInfC{$\Gamma \mapsto \Delta, \neg A$}
+        \DisplayProof $\quad (\mapsto \neg)$
+
+        \vspace{4mm}
+
+        \item \AxiomC{$\Gamma \mapsto \Delta, A$}
+        \AxiomC{$B, \Gamma \mapsto \Delta$}
+        \BinaryInfC{$(A \to B), \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\to\ \mapsto)$ \inlineitem
+        \AxiomC{$A, \Gamma \mapsto \Delta, B$}
+        \UnaryInfC{$\Gamma \mapsto \Delta, (A \to B)$}
+        \DisplayProof $\quad (\mapsto\ \to)$
+
+        \vspace{4mm}
+
+        \item \AxiomC{$A, \Gamma \mapsto \Delta$}
+        \AxiomC{$\Gamma \mapsto \Delta, A$}
+        \BinaryInfC{$\Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (Cut)$
+        
+        \vspace{4mm}
+
+        Эти правила мы уже знаем, теперь введём правила для кванторов
+
+        \vspace{2mm}
+
+        \item {\color{red} \AxiomC{$A(t), \Gamma \mapsto \Delta$}
+        \UnaryInfC{$\forall x\ A(x), \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\forall \mapsto)$} \inlineitem
+        {\color{blue} \AxiomC{$\Gamma \mapsto A(y), \Delta$}
+        \UnaryInfC{$\Gamma \mapsto \forall x\ A(x), \Delta$}
+        \DisplayProof $\quad (\mapsto \forall )$}
+
+        \vspace{4mm}
+
+        \item {\color{blue} \AxiomC{$A(y), \Gamma \mapsto \Delta$}
+        \UnaryInfC{$\exists x\ A(x), \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\exists \mapsto)$} \inlineitem
+        {\color {red}\AxiomC{$\Gamma \mapsto A(t), \Delta$}
+        \UnaryInfC{$\Gamma \mapsto \exists x\ A(x), \Delta$}
+        \DisplayProof $\quad (\mapsto \exists )$}
+
+        \vspace{4mm}
+
+        Правила удалений повторений
+
+        \vspace{2mm}
+
+        \item \AxiomC{$\Gamma, A, A \mapsto \Delta$}
+        \UnaryInfC{$\Gamma, A \mapsto \Delta$}
+        \DisplayProof \inlineitem
+        \AxiomC{$\Gamma \mapsto A, A \Delta$}
+        \UnaryInfC{$\Gamma \mapsto A, \Delta$}
+        \DisplayProof 
+\end{enumerate}
+
+Посмотрим на синие правила (11 и 12). В них $y$ - это просто новая переменная, которая не встречается ни в каких других формулах (для избегания коллизий)
+
+Поймём, что если сверху есть контрпример, то и снизу он есть.
+
+11: Предположим существует контрпример, т. е $\Gamma = 1,\ A(y) = 0, \Delta = 0$.
+Тогда с этими $\Gamma$ и $\Delta$ выражение $\forall x A(x)$ тоже неверно, и это будет контпримером для секвенции снизу
+
+12: Предположим, существует контпример, т. е. $A(y) = 1,\ \Gamma = 1,\ \Delta = 0$.
+Значит при таких $\Gamma$ и $\Delta$ действительно существует $x$, такой что $A(x)$ (в данном случае подошёл $y$). Это и есть 
+контпример снизу.
+
+Аналогично, если существует контпример к нижним, значит он является и контрпримером к верхним.
+"Синий" случай можно считать простым, так как переход полностью равносилен.\\
+
+Красные правила (10 и 13). В них $t$ - это "свободный для подстановки" терм. 
+Свободные переменные определяются естественно по аналогии с Хаскеллем: переменная связана, если её определил некоторый квантор и она находится в его области действия, иначе свободна.
+
+Например, если формула $A(x)$ имеет вид $\varphi(x) \land \exists x\ \psi(x, x)$, то свободным здесь является только $x$ внутри $A(x)$, и подстановку нужно делать только в него.
+
+Что это значит: по аналогии с правилом Cut у нас может оказаться, что если мы подставим вместо $t$ что-то удачное, это позволит нам
+доказать общезначимость формулы (см. примеры). Чтобы этим пользоваться, покажем, что у нас есть следствие "сверху вниз"
+
+13: 
+Предположим, что есть контпример для нижней формулы. То есть $\Gamma = 1, \Delta = 0$ и не существует $x$, т. ч. $A(x)$.
+Тогда при данных $\Gamma$ и $\Delta$ также невозможно выполнить и верхнюю формулу (если мы выполнили A(t), значит значение $t$ могло бы подойти в качестве $x$ снизу).
+
+10: Заметим, что $\forall x A(x)$ выражается как $\neg \exists x (\neg A(x))$, приводя к правилу 13.
+
+\textit{Замечание: обратного следствия нет, и не надо. Если нижняя общезначима, верхняя не обязательно общезначима. Это логично, так как вместо t мы могли подставить
+что-то заведомо сломанное}
+
+Пример вывода:
+\begin{enumerate}
+    \item $\mapsto \forall x P(x) \to \exists x P(x)$
+    \item $\forall x P(x) \mapsto \exists x P(x)$
+    \item $\forall x P(x) \mapsto P(y)$
+    \item $P(y) \mapsto P(y)$
+\end{enumerate}
+
+Пример с более сложным выбором терма $t$:
+\begin{enumerate}
+    \item $\forall x P(x) \mapsto P(f(x)) \land P(g(x, y))$
+    \item [2.1] $\forall x P(x) \mapsto P(f(x))$
+    \item [2.2] $\forall x P(x) \mapsto P(g(x, y))$
+    \item [3.1] $P(f(x)) \mapsto P(f(x))$
+    \item [3.2] $P(g(x, y)) \mapsto P(g(x, y))$
+\end{enumerate}
+
+\begin{theorem}
+    (О полноте и корректности исчисления секвенций)
+    $\Gamma \to \Delta$ общезначима $\Leftrightarrow$ $\Gamma \to \Delta$ выводима из аксиом
+\end{theorem}
+
+\begin{proof}
+    "$\Leftarrow$": следует из корректности правила
+
+    "$\Rightarrow$": Лемма Кёнига - любое бесконечное дерево имеет бесконечную ветвь (очевидно, было на практике).
+
+    Запишем правила {\color{red} (10), (13)} немного по-другому:
+
+    \AxiomC{$A(t), \forall x A(x), \Gamma \mapsto \Delta$}
+        \UnaryInfC{$\forall x\ A(x), \Gamma \mapsto \Delta$}
+        \DisplayProof $\quad (\forall' \mapsto)$ - (старое правило + удаление повторений)
+
+    \vspace{2mm}
+    
+    \AxiomC{$\Gamma \mapsto \Delta, \exists x A(x), A(t)$}
+    \UnaryInfC{$\Gamma \mapsto \exists x\ A(x), \Delta$}
+    \DisplayProof $\quad (\mapsto \exists' )$
+
+    Пусть у нас есть формула $\Gamma \mapsto \Delta$, и мы хотим доказать её общезначимость.
+    Про Cut забудем. Все формулы, красных, назовём простыми. Красные заменим на определённые выше и назовём сложными.
+
+    Примерный алгоритм будет такой:
+    \begin{enumerate}
+        \item Обработать все листься с простыми правилами, пока они есть. Это всегда занимает конечное количество шагов.
+        \item Каждому листу со сложным правилом добавить одно "следующее" ответвление
+        \item Если остались листья, в которых можно применить какую-то операцию, вернуться к шагу 1.
+    \end{enumerate} 
+
+    Тогда у нас будет получаться дерево.
+
+    \begin{tikzcd}
+        &                                      &                                      & \Gamma \to \Delta \arrow[lld] \arrow[rrd] &                          &                                      &                                     \\
+        & \text{Простая} \arrow[ld] \arrow[rd] &                                      &                                           &                          & \text{Простая} \arrow[ld] \arrow[rd] &                                     \\
+    \text{Простая} \arrow[d] &                                      & \text{Простая} \arrow[ld] \arrow[rd] &                                           & \text{Сложная} \arrow[d] &                                      & \text{Простая} \arrow[d] \arrow[ld] \\
+    {}                       & {}                                   &                                      & {}                                        & {}                       & {}                                   & {}                                 
+    \end{tikzcd}
+
+    Для простых операций понятно, что у вершины будет один или два сына. Как определить шаг для сложной опреации, если 
+    вместо $t$ можно подставить любой терм? Будем подставлять по очереди все возможные термы, которые туда подходят. 
+    Их счётное количество, поэтому можно (и нужно) гарантировать такой порядок обхода, что любой конкретный терм будет посещён на какой-то конечной глубине 
+    (по аналогии с тем, как можно выписать все рациональные числа).
+
+    Переименуем все кванторные переменные, чтобы им соответствовали специальные буквы.
+
+    \textbf{Случай 1}: дерево бесконечно. Тогда есть бесконечная ветвь. Будем по ней строить контрпример.
+
+    Носитель интерпретации - множества термов нашей сигнатуры $+$ переменные из $\Gamma$ (которые не из кванторов)
+
+    Функциональные символы определяются: $f^{(k)}_{I}(t_1, t_2, \cdots, t_k) = f_k(t_1, t_2, \cdots, t_k)$. Можно думать, 
+    что мы просто для определили их как .toString(), потому что нам они не очень нужны.
+
+    Предикатные символы: $P_I(t_1, \cdots, t_k)$ - истина, если $P(t_1, \cdots, t_k)$ встречалось слева от стрелки, иначе ложь.
+    Если они встречаются и слева, и справа, то заметим, что в какой-то момент они были слева и справа одновременно, а значит сработала аксиома.
+    Если формула не встречалась, то можно определить любое значение (пусть будет ложное).
+
+    $\pi(x) = x$
+
+    Проверим для любой формулы, что если она слева, то она истинна, если справа, то ложна.
+
+    Для атомарных по нашему определению.
+
+    Далее индукциея по глубине. База - атомарные. Переход: например, если самая внешняя операция - дизъюнкция $A \lor B$ слева от стрелки, 
+    то есть 2 ветви, в одной $A$ слева (значит истинна по индукции), в другой $B$ слева (значит истинна по индукции), значит и $A \lor B$ истинна. 
+    Аналогично все остальные связки
+
+    Для синих формул: если $\forall$ справа от стрелки, значит в поддереве $A(y)$ справа от стрелки, значит она ложна. Значит $\forall x A(x)$ тоже ложна. 
+    Аналогично для $\exists$ слева от стрелки.
+
+    Для сложных формул: $\forall$ слева от стрелки, значит в поддереве встретились все возможные $A(t)$ слева от стрелки. Все они истинны, значит и $\forall x A(x)$ тоже истина.
+    
+    $\exists$ справа от стрелки: в поддереве $A(t)$ справа от стрелки для всех возможных $t$, они ложны, значит и $\exists x A(x)$ справа от стрелки тоже ложно.
+    
+    Значит все формулы в $\Gamma$ будут истинны, все формулы в $\Delta$ ложны, то есть мы построили контрпример.\\
+
+    \textbf{Случай 2}: Дерево конечно. Тогда либо во всех листьях аксиомы (значит мы победили), либо найдётся лист, который не является аксиомой.
+    В нём слева и справа стоят атомарные формулы (иначе это был бы не лист). Тогда все формулы слева сделаем истинными, все справа ложными, это и будет контпримером к $\Gamma \to \Delta$
+
+    Интуиция такая: понятно, что трудности возникают только со сложными формулами, потому что надо подобрать подходящее $t$. 
+    Давайте гарантируем порядок выбора $t$, такой что все возможные термы будут когда-нибудь выбраны. Если среди них есть такой, который 
+    доказывает общезначность, то на нём процесс и завершится. Если такого нет, то ветвь как раз и будет бесконечной, потому что никакое $t$ так и не подойдёт.
+
+\end{proof}
+
+\subsection{Вывод из списка формул}
+
+\begin{conj}
+    Пусть $\Gamma$ - список замкнутых формул. $\Gamma$ непротиворечив $\Leftrightarrow$ 
+    $\forall \varphi_1, \cdots, \varphi_n \in \Gamma$ $\varphi_1 \land \cdots \land \varphi_n$ не является противоречивой 
+    $\leftrightarrow \neg(\varphi_1 \land \cdots \land \varphi_n)$ не является общезначимой.
+\end{conj}
+
+\begin{conj}
+    $\Gamma$ совместен $\Leftrightarrow$ $\exists I$ - интерпретация, т. ч $\forall \varphi \in \Gamma\ \varphi[I] = 1$
+\end{conj}
+
+\begin{theorem}
+    (о компактности). $\Gamma$ совместен $\Leftrightarrow \Gamma$ непротиворечив.
+\end{theorem}
+
+\begin{proof}
+    $"\Rightarrow"$ - очевидно.
+
+    $"\Leftarrow"$ вспомним, как мы доказывали это для пропозициональной логики. Мы дополняли список до полного (для любой формулы содержится либо она, либо её отрицание).
+    Тут мы сделаем то же самое, но этого будет недостаточно
+
+    $\Gamma$ - полный $\Leftrightarrow$ для любой замкнутой $\varphi$ либо $\varphi \in \Gamma$, либо $\neg \varphi \in \Gamma$
+
+
+    \begin{lemma}
+        $\Gamma$ непротиворечив $\Rightarrow$ $\Gamma, \varphi$ непротиворечив или $\Gamma, \neg \varphi$ непротиворечив.
+    \end{lemma}
+
+    \begin{proof}
+        Действительно, если оба противоречивы, то можно взять $\psi_1, \dots, \psi_k \in \Gamma$ противоречивые с $\varphi$ и $\sigma_1, \dots, \sigma_n \in \Gamma$ протвиоречивые с $\neg \varphi$.
+        Тогда их объединение содержится в $\Gamma$, значит оно непротиворечиво, но тогда оно должно выполнять или $\varphi$, или $\neg \varphi$
+    \end{proof}
+
+    \begin{lemma}
+        $\Gamma$ непротиворечив $\Rightarrow \exists \Gamma' \supseteq \Gamma : \Gamma'$ - непротиворечив и $\Gamma'$ полный.
+    \end{lemma}
+
+    \begin{proof}
+        (для счётной сигнатуры). Для произвольной доказывается через лемму Цорна, но нам этого знать не надо.
+        В силу счётности можем для каждой формулы воспользоваться предыдущей леммой, добавляя её или её отрицание.
+    \end{proof}
+
+    \begin{conj}
+        $\Gamma$ называется экзистенциально полным, если $\exists x \varphi \in \Gamma$, то $\exists$ замкнутый терм $t : \varphi(t) \in \Gamma$.
+    \end{conj}
+
+    \begin{lemma}
+        $\Gamma$ непротиворечив $\Rightarrow \exists \Gamma' \supseteq \Gamma : \Gamma'$ экзистенциально полный и непротиворечивый. 
+        При этом сигнатура $\Gamma'$ содержит новые константы.
+    \end{lemma}
+
+    \begin{proof}
+        Выпишем список формул, для которых условие экзистенциальной полноты не выполняется:
+        $\exists x_1 \varphi_1,\ \exists x_2 \varphi_2 \dots$
+
+        Тогда добавим формулы $\varphi_1(c_1), \varphi_2(c_2) \dots$, где $c_1, c_2 \dots$ - новые константы
+
+        Покажем, что непротиворечивость сохраняетя. Предположим, нашёлся набор, для которого
+
+        $\psi_1 \land \dots \land \psi_k \land \varphi(c_{i_1}) \dots \land \varphi(c_{i_l})$ невыполним. Но мы знаем, что набор
+
+        $\psi_1 \land \dots \land \psi_k \land \exists x_{i_1} \varphi(x_{i_1}) \dots \land  \exists x_{i_l} \varphi(c_{i_l})$ выполним в $\Gamma$. Тогда можно значения $c_{i_k}$ выбрать равными
+        значениям соотвествующим $x_{i_k}$ (раз нижняя формула выполняется, значит такие существуют). Тогда и верхняя рмула выполнима.
+    \end{proof}
+
+\begin{lemma}
+    $\Gamma$ - непротиворечив, тогда $\exists \Gamma' \supseteq \Gamma : \Gamma'$ - полный и экзистенциально полный
+\end{lemma}
+
+\begin{proof}
+    $\Gamma_0 = \Gamma,\ \Gamma_1 \supseteq \Gamma$ - полное, $\Gamma_2 \supseteq \Gamma_1$ - экзистенциально полное. Но когда мы
+    расширили $\Gamma_1$ до $\Gamma_2$ могла пропасть полнота. Тогда будем по очереди расширять, восстанавливая то полноту, то экзистенциальную полноту, получив последовательность
+
+    $\Gamma \subseteq \Gamma_1 \subseteq \Gamma_2 \subseteq \Gamma_3 \subseteq \Gamma_4 \subseteq \cdots$, где чередуются полные и экзистенциально полные.
+
+    $\Gamma' := \overset{\infty}{\underset{i = 0}{\bigcup}} \Gamma_i$ - полное и экзистенциально полное, так как любая формула попадет в какой-то конкретный $\Gamma_i$.
+\end{proof}
+
+\begin{lemma}
+    $\Gamma'$ - полный, экзистенциально полный и непротиворечивый, тогда $\exists$ интепретация
+    $I$, такая что $I$ выполняет все формулы из $\Gamma'$ 
+\end{lemma}
+
+\begin{proof}
+    Носитель $I$ - множество замкнутых термов.
+
+    Функциональные символы: $f_I(t_1, \dots, t_k) = f(t_1, \dots, t_k)$ - просто приписали функциональный символ к термам, а-ля .toString()
+
+    Предикатные: $P_I(t_1, \dots, t_k)$ - истина, если $P_I(t_1, \dots, t_k) \in \Gamma'$, и ложно, если $\neg P_I(t_1, \dots, t_k) \in \Gamma'$
+
+    Индукцией по построению формулы доказываем $\varphi[I] = 1 \Leftrightarrow \varphi \in \Gamma$, $\varphi[I] = 0 \Leftrightarrow \neq \varphi \in \Gamma$
+
+    $\land, \lor, \neg, \Rightarrow$ доказывается очевидно аналогично пропозициональному
+
+    Для формулы $\exists x \varphi(x)$: 
+    Хотим проверить, что 
+    $\begin{cases}
+        \varphi \in \Gamma \Rightarrow \varphi[I] = 1\\
+        \varphi \notin \Gamma \Rightarrow \varphi[I] = 0
+    \end{cases}$
+
+    Пусть $\exists x \varphi(x) \in \Gamma$. Тогда по экзистенциальной полноте для некоторого терма $t\ \varphi(t) \in \Gamma \Rightarrow \varphi(t)[I] = 1 \Rightarrow \exists x \varphi(x)[I] = 1$
+
+    $\exists x \varphi(x) \notin \Gamma \Rightarrow \neg \exists x \varphi \in \Gamma \Rightarrow \forall t \varphi(t) \notin \Gamma$. По ИП для любого $t$ $\varphi(t)$ ложна
+    $\Rightarrow \exists x \varphi[I] = 0$
+
+    Аналогично для $\forall$
+
+    $\forall x \varphi \in \Gamma$. Хотим, чтобы для любого $t$ $\varphi(t) \in \Gamma$.
+    Допустим, это не так. Тогда по полноте $\neg \varphi t \in \Gamma$. Но тогда $\forall x \varphi \land \neg \varphi(t)$ - противоречие 
+
+    $\forall x \varphi \notin \Gamma \Rightarrow \neg \forall x \varphi \in \Gamma \Leftrightarrow \exists x(\neg \varphi) \in \Gamma \Rightarrow$ по экзистенциальной полноте
+    найдется $t$, т. ч. $\neg \varphi(t) \in \Gamma$. Тогда $\neg \varphi(t)[I] = 1 \Rightarrow \forall x \varphi[I] = 0$
+\end{proof}
+
+Объединяя 4 леммы получаем совместность.
+
+\end{proof}
