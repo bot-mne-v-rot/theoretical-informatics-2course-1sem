@@ -82,6 +82,7 @@ tlmgr install   \
   bussproofs \
   multicol \
   enumitem \
+  ulem \
 
 
 # Keep no backups (not required, simply makes cache bigger)
