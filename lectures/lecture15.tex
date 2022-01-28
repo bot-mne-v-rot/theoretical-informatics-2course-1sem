@@ -70,44 +70,44 @@
 Из всех этих определений становится понятно, почему символы из алфавита называются терминалами, а символы из $N$ нетерминалами: по правилам заменять можно только нетерминалы; с другой стороны, как только у нас в строке появился терминал, он оттуда никуда не денется; и вывод строки из языка нельзя считать завершённым, пока в строке есть хоть один нетерминал.
 
 \begin{conj}
-    \textbf{Дерево вывода} --- подвешенное дерево, т.ч.:
+    \textbf{Дерево вывода} (дерево разбора) --- подвешенное дерево, т.ч. все дети упорядочены, в каждом узле записан какой-то символ $c_v$ или пустая строка $\varepsilon$, при этом в корне записан начальный нетерминальный символ $s$, и для любой вершины $v$ верно одно из двух:
     \begin{itemize}
-        \item Корень --- стартовый нетерминал $S$.
-        \item В остальных вершинах записаны строки из $(\Sigma \sqcup N)^*$.
-        \item В листьях записаны строки из $\Sigma^*$, т.е. состоящие только из терминалов.
-        \item Дети каждой вершины $v$ упорядочены и их столько же, сколько в строке, записанной в $v$, нетерминалов.
-        \item Строка в ребёнке получается применением какого-то правила к соотв. по номеру нетерминалу в строке родителя. Т.е. если в $k$-м сыне записина строка $r$, а $k$-й нетерминал в строке родителя был $A$, значит, в $R$ есть правило $A \to r$.
+      \item $c_v$ --- терминальный или в $v$ записана пустая строка. Тогда $v$ --- лист.
+      \item $c_v$ --- нетерминальный. Тогда есть какое-то правило для текущего $c_v \rightarrow \alpha$, т.ч. если $\abs{\alpha} \geqslant 1$, то у вершины $v$ $\abs{\alpha}$ сыновей, в каждом из которых записан соответствующий ему символ из $\alpha$, иначе у $v$ один ребёнок, в котором записана пустая строка.
     \end{itemize}
 
-    Мы говорим, что некоторое дерево вывода $T$ --- \textbf{дерево вывода для строки $\alpha$}, если $\alpha$ получается конкатенацией слева направо всех строк в листьях $T$.
+    Мы говорим, что некоторое дерево вывода $T$ --- \textbf{дерево вывода для строки $\alpha$}, если $\alpha$ получается конкатенацией слева направо всех символов и пустых строк в листьях $T$.
 \end{conj}
 
 \textbf{Пример.} Дерево вывода для строки $()()()$: \\
 \begin{center}
-    \begin{tikzpicture}[sibling distance=5em,
+    \begin{tikzpicture}[sibling distance=7em,
         every node/.style = {align=center}]]
         \node {S}
-            child { node {S S} 
-                child { node {()} }
-                child { node {S S} 
-                    child { node {()} }
-                    child { node {()} }
+            child { node {S} 
+                child [sibling distance=2em] { node {(} }
+                child [sibling distance=2em] { node {S}
+                    child { node {$\varepsilon$} }
                 }
-            };
-    \end{tikzpicture}
-\end{center}
-
-\textbf{Пример.} Дерево вывода для строки $()(())$: \\
-\begin{center}
-    \begin{tikzpicture}[sibling distance=5em,
-        every node/.style = {align=center}]]
-        \node {S}
-            child { node {S S} 
-                child { node {()} }
-                child { node { (S) } 
-                    child { node {()} }
+                child [sibling distance=2em] { node {)} }
+            }
+            child{ node {S}
+                child [sibling distance=3em]  { node {S} 
+                    child [sibling distance=1em] { node {(} }
+                    child [sibling distance=1em] { node {S}
+                        child { node {$\varepsilon$} }
+                    }
+                    child [sibling distance=1em] { node {)} }
                 }
-            };
+                child [sibling distance=3em]  { node {S} 
+                    child [sibling distance=1em]{ node {(} }
+                    child [sibling distance=1em]{ node {S}
+                        child { node {$\varepsilon$} }
+                    }
+                    child [sibling distance=1em]{ node {)} }
+                }
+            }
+            ;
     \end{tikzpicture}
 \end{center}
 
@@ -227,3 +227,12 @@ $$ S \to S S \mid a S b \mid b S a \mid \varepsilon $$
         Тогда КС-грамматика для $L^*$ --- $(\Sigma, N' \sqcup \{S\}, R' \cup \{ S \to S S \mid S' \mid \varepsilon \}, S )$. 
     \end{enumerate}
 \end{proof}
+
+\begin{theorem}[о пересечении КС и регулярного языков]
+    Пусть $L_1$ --- КС-язык, $L_2$ --- регулярный язык. Тогда $L_1 \cap L_2$ --- КС-язык.
+\end{theorem}
+
+\begin{theorem}[о множестве префиксов КС-языка]
+    Пусть $L$ --- КС-язык. \\ 
+    Тогда $\operatorname{prefixes}(L) = \{ u \mid \exists w : uw \in L \}$ --- КС-язык.
+\end{theorem}
