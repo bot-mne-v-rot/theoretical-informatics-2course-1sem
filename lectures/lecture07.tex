@@ -174,7 +174,7 @@
     \DisplayProof $\quad (\mapsto \exists' )$
 
     Пусть у нас есть формула $\Gamma \mapsto \Delta$, и мы хотим доказать её общезначимость.
-    Про Cut забудем. Все формулы, красных, назовём простыми. Красные заменим на определённые выше и назовём сложными.
+    Про Cut забудем. Все формулы кроме красных назовём простыми. Красные заменим на определённые выше и назовём сложными.
 
     Примерный алгоритм будет такой:
     \begin{enumerate}
@@ -204,7 +204,7 @@
     Носитель интерпретации - множества термов нашей сигнатуры $+$ переменные из $\Gamma$ (которые не из кванторов)
 
     Функциональные символы определяются: $f^{(k)}_{I}(t_1, t_2, \cdots, t_k) = f_k(t_1, t_2, \cdots, t_k)$. Можно думать, 
-    что мы просто для определили их как .toString(), потому что нам они не очень нужны.
+    что мы просто определили их как .toString(), потому что нам они не очень нужны.
 
     Предикатные символы: $P_I(t_1, \cdots, t_k)$ - истина, если $P(t_1, \cdots, t_k)$ встречалось слева от стрелки, иначе ложь.
     Если они встречаются и слева, и справа, то заметим, что в какой-то момент они были слева и справа одновременно, а значит сработала аксиома.
@@ -297,10 +297,14 @@
         Тогда добавим формулы $\varphi_1(c_1), \varphi_2(c_2) \dots$, где $c_1, c_2 \dots$ - новые константы
 
         Покажем, что непротиворечивость сохраняетя. Предположим, нашёлся набор, для которого
-
-        $\psi_1 \land \dots \land \psi_k \land \varphi(c_{i_1}) \dots \land \varphi(c_{i_l})$ невыполним. Но мы знаем, что набор
-
-        $\psi_1 \land \dots \land \psi_k \land \exists x_{i_1} \varphi(x_{i_1}) \dots \land  \exists x_{i_l} \varphi(c_{i_l})$ выполним в $\Gamma$. Тогда можно значения $c_{i_k}$ выбрать равными
+        \begin{gather*}
+            \psi_1 \land \dots \land \psi_k \land \varphi(c_{i_1}) \dots \land \varphi(c_{i_l})
+        \end{gather*}
+        невыполним. Но мы знаем, что набор
+        \begin{gather*}
+            \psi_1 \land \dots \land \psi_k \land \exists x_{i_1} \varphi(x_{i_1}) \dots \land  \exists x_{i_l} \varphi(c_{i_l})
+        \end{gather*}
+        выполним в $\Gamma$. Тогда можно значения $c_{i_k}$ выбрать равными
         значениям соотвествующим $x_{i_k}$ (раз нижняя формула выполняется, значит такие существуют). Тогда и верхняя рмула выполнима.
     \end{proof}
 
@@ -311,8 +315,10 @@
 \begin{proof}
     $\Gamma_0 = \Gamma,\ \Gamma_1 \supseteq \Gamma$ - полное, $\Gamma_2 \supseteq \Gamma_1$ - экзистенциально полное. Но когда мы
     расширили $\Gamma_1$ до $\Gamma_2$ могла пропасть полнота. Тогда будем по очереди расширять, восстанавливая то полноту, то экзистенциальную полноту, получив последовательность
-
-    $\Gamma \subseteq \Gamma_1 \subseteq \Gamma_2 \subseteq \Gamma_3 \subseteq \Gamma_4 \subseteq \cdots$, где чередуются полные и экзистенциально полные.
+    \begin{gather*}
+        \Gamma \subseteq \Gamma_1 \subseteq \Gamma_2 \subseteq \Gamma_3 \subseteq \Gamma_4 \subseteq \cdots
+    \end{gather*}
+    где чередуются полные и экзистенциально полные.
 
     $\Gamma' := \overset{\infty}{\underset{i = 0}{\bigcup}} \Gamma_i$ - полное и экзистенциально полное, так как любая формула попадет в какой-то конкретный $\Gamma_i$.
 \end{proof}
@@ -329,29 +335,40 @@
 
     Предикатные: $P_I(t_1, \dots, t_k)$ - истина, если $P_I(t_1, \dots, t_k) \in \Gamma'$, и ложно, если $\neg P_I(t_1, \dots, t_k) \in \Gamma'$
 
-    Индукцией по построению формулы доказываем $\varphi[I] = 1 \Leftrightarrow \varphi \in \Gamma$, $\varphi[I] = 0 \Leftrightarrow \neq \varphi \in \Gamma$
-
+    Индукцией по построению формулы доказываем, что:
+    \begin{gather*}
+        \varphi[I] = 1 \Leftrightarrow \varphi \in \Gamma, \; \varphi[I] = 0 \Leftrightarrow \neq \varphi \in \Gamma
+    \end{gather*}
     $\land, \lor, \neg, \Rightarrow$ доказывается очевидно аналогично пропозициональному
 
     Для формулы $\exists x \varphi(x)$: 
-    Хотим проверить, что 
-    $\begin{cases}
-        \varphi \in \Gamma \Rightarrow \varphi[I] = 1\\
-        \varphi \notin \Gamma \Rightarrow \varphi[I] = 0
-    \end{cases}$
+    Хотим проверить, что:
+    \begin{gather*}
+        \begin{cases}
+            \varphi \in \Gamma \Rightarrow \varphi[I] = 1\\
+            \varphi \notin \Gamma \Rightarrow \varphi[I] = 0
+        \end{cases}
+    \end{gather*}
 
-    Пусть $\exists x \varphi(x) \in \Gamma$. Тогда по экзистенциальной полноте для некоторого терма $t\ \varphi(t) \in \Gamma \Rightarrow \varphi(t)[I] = 1 \Rightarrow \exists x \varphi(x)[I] = 1$
+    Пусть $\exists x \varphi(x) \in \Gamma$. Тогда по экзистенциальной полноте для некоторого терма $t$:
+    \begin{gather*}
+        \varphi(t) \in \Gamma \Rightarrow \varphi(t)[I] = 1 \Rightarrow \exists x \varphi(x)[I] = 1
+    \end{gather*}
 
-    $\exists x \varphi(x) \notin \Gamma \Rightarrow \neg \exists x \varphi \in \Gamma \Rightarrow \forall t \varphi(t) \notin \Gamma$. По ИП для любого $t$ $\varphi(t)$ ложна
-    $\Rightarrow \exists x \varphi[I] = 0$
+    Теперь пусть $\exists x \varphi(x) \notin \Gamma$. Тогда:
+    \begin{gather*}
+        \exists x \varphi(x) \notin \Gamma \Rightarrow \neg \exists x \varphi \in \Gamma \Rightarrow \forall t \varphi(t) \notin \Gamma
+    \end{gather*} 
+    По ИП для любого $t$ $\varphi(t)$ ложна
+    $\Rightarrow \exists x \varphi[I] = 0$. 
 
-    Аналогично для $\forall$
-
-    $\forall x \varphi \in \Gamma$. Хотим, чтобы для любого $t$ $\varphi(t) \in \Gamma$.
-    Допустим, это не так. Тогда по полноте $\neg \varphi t \in \Gamma$. Но тогда $\forall x \varphi \land \neg \varphi(t)$ - противоречие 
-
-    $\forall x \varphi \notin \Gamma \Rightarrow \neg \forall x \varphi \in \Gamma \Leftrightarrow \exists x(\neg \varphi) \in \Gamma \Rightarrow$ по экзистенциальной полноте
-    найдется $t$, т. ч. $\neg \varphi(t) \in \Gamma$. Тогда $\neg \varphi(t)[I] = 1 \Rightarrow \forall x \varphi[I] = 0$
+    Аналогично для квантора всеобщности $\forall$:
+    \begin{itemize}
+        \item $\forall x \varphi \in \Gamma$. Хотим, чтобы для любого $t$ $\varphi(t) \in \Gamma$.
+        Допустим, это не так. Тогда по полноте $\neg \varphi t \in \Gamma$. Но тогда $\forall x \varphi \land \neg \varphi(t)$ - противоречие 
+        \item $\forall x \varphi \notin \Gamma \Rightarrow \neg \forall x \varphi \in \Gamma \Leftrightarrow \exists x(\neg \varphi) \in \Gamma \Rightarrow$ по экзистенциальной полноте
+        найдется $t$, т. ч. $\neg \varphi(t) \in \Gamma$. Тогда $\neg \varphi(t)[I] = 1 \Rightarrow \forall x \varphi[I] = 0$ 
+    \end{itemize}
 \end{proof}
 
 Объединяя 4 леммы получаем совместность.
