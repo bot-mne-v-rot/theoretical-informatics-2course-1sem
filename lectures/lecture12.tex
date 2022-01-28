@@ -10,7 +10,7 @@
 
 Сейчас мы будем классифицировать $k$-местные предикаты ($P: \mathcal{N}^k \to \{ 0, 1 \}$). 
 
-Старутем с классов $\Sigma_0, \Pi_0$. Оба этих класса представляют разрешимые предикаты и связаны свойством, что в $\Pi_0$ лежат отрицания всех предикатов из $\Sigma_0$. Далее, для $k > 0$ имеем: \begin{itemize}
+Старутем с классов $\Sigma_0, \Pi_0$. Оба этих класса представляют все разрешимые предикаты и связаны свойством, что в $\Pi_0$ лежат отрицания всех предикатов из $\Sigma_0$. Далее, для $k > 0$ имеем: \begin{itemize}
     \item $p \in \Sigma_k$ означает, что \[\exists Q \in \Pi_{k - 1} : \forall \bar{x} \; P(\bar{x}) = 1 \Leftrightarrow \exists y \, Q(\bar{x}, y) = 1 \]
     Тут $\bar{x}$ -- это вектор из переменных, а $y$ -- ровно одна переменная.
     \item $P \in \Pi_k$ означает, что \[ \exists Q \in \Sigma_{k - 1} : \forall \bar{x} \; P(\bar{x}) \Leftrightarrow \forall y \, Q(\bar{x}, y) = 1  \]
@@ -18,7 +18,7 @@
 
 Давайте поймем, что из себя предсталяет класс $\Sigma_1$. 
 
-\textbf{Утверждение.} Класс $\Sigma_1$ -- перечислимые придикаты.
+\textbf{Утверждение.} Класс $\Sigma_1$ -- все перечислимые придикаты.
 
 \begin{proof}
     Согласно определению это предикаты $P(x) \equiv \exists y \; R(x, y)$, где $R$ -- разрешимый. Очевидно, что предикаты такого вида перечислимы, так как легко представить полуразрешающий алгоритм: будем просто перебирать $y$ и запускать алгоритм $R(x, y)$; если он выдаст 1, то и мы выдадим 1, иначе продолжим перебирать. 
@@ -49,7 +49,28 @@
     Таким образом, мы получили такую картинку: 
 
     \begin{center}
-        \includegraphics[scale=0.4]{ggwp.png}
+        \begin{tikzpicture}
+            \coordinate (A) at (0,0);
+            \coordinate (B) at (8,0);
+            \coordinate (H) at (-2,0);
+            \coordinate (C) at ($(A)!.5!(B)$);
+            \coordinate (D) at ($(A)!.5!(C)$);
+            \coordinate (E) at ($(B)!.5!(C)$);
+            \coordinate (R) at (-3,0);
+
+            \coordinate[label=above:{$\Sigma_0 = \Pi_0$}] (p1) at (3,0.08);
+            \coordinate[label=above:{$\Sigma_1$}] (p2) at ($(A)!.5!(D) + (0.2,0.6)$);
+            \coordinate[label=above:{$\Pi_1$}] (p3) at ($(C)!.5!(E) + (-0.2,0.6)$);
+            \coordinate[label=above:{$\Sigma_2$}] (p4) at ($(H)!.5!(A) + (0.8,2.3)$);
+            \coordinate[label=above:{$\Pi_2$}] (p5) at ($(E)!.5!(B) + (-0.8,2.3)$);
+          
+            \draw (A) let \p1 = ($(C) - (D)$), \n1={veclen(\x1,\y1)} in arc[start angle=180, end angle=0, radius=\n1];
+            \draw (D) let \p1 = ($(C) - (D)$), \n1={veclen(\x1,\y1)} in arc[start angle=180, end angle=0, radius=\n1];
+            \draw (A) let \p1 = ($(C) - (A)$), \n1={veclen(\x1,\y1)} in arc[start angle=180, end angle=0, radius=\n1];
+            \draw (H) let \p1 = ($(C) - (A)$), \n1={veclen(\x1,\y1)} in arc[start angle=180, end angle=0, radius=\n1];
+            \draw (R) let \p1 = ($(C) - (A)$), \n1={veclen(\x1,\y1)} in arc[start angle=180, end angle=0, radius=6];
+            \draw (D) let \p1 = ($(C) - (D)!.5!(C)$), \n1={veclen(\x1,\y1)} in arc[start angle=180, end angle=0, radius=\n1];
+          \end{tikzpicture}
     \end{center}
     
 
